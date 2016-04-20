@@ -1,11 +1,8 @@
 package com.justbuyit.dao;
 
-import org.springframework.stereotype.Repository;
-
 import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.model.Order;
 
-@Repository
 public interface SubscriptionDAO {
 
     public abstract void create(String id, Order order) throws JustBuyItException;

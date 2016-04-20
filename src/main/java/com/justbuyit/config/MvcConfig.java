@@ -13,14 +13,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 @ComponentScan(basePackages = { "com.justbuyit.controller" })
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/jsp/");
-//        resolver.setSuffix(".jsp");
-//        return resolver;
-//    }
-    
     @Bean 
     public FreeMarkerConfigurer freemarkerConfig() { 
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer(); 

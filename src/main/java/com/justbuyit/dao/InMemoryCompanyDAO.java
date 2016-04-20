@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.google.inject.internal.Lists;
@@ -14,6 +15,7 @@ import com.justbuyit.exception.UserAlreadyExistsException;
 import com.justbuyit.exception.UserNotFoundException;
 import com.justbuyit.model.Company;
 
+@Repository
 public class InMemoryCompanyDAO implements CompanyDAO {
 
     private final static Logger LOG = LoggerFactory.getLogger(InMemoryCompanyDAO.class);
