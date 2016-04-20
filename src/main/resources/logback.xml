@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true">
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>
-        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-      </Pattern>
-    </layout>
-  </appender>
-
-  <logger name="com.justbuyit" level="debug" additivity="false">
-    <appender-ref ref="STDOUT" />
-  </logger>
-
-  <root level="warn">
-    <appender-ref ref="STDOUT" />
-  </root>
+  <include resource="com/justbuyit/config/log/logback.${APP_CONFIG_MODE:-dev}.xml"/>
+  <include resource="com/justbuyit/config/log/logback-common.xml"/>
 
 </configuration>
