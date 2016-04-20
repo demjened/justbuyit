@@ -1,5 +1,10 @@
 package com.justbuyit.eventprocessor.subscription;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.bind.JAXBException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +44,12 @@ public class CreateSubscriptionEventProcessor extends EventProcessor<CreateSubsc
 
         // assign user
         // assignmentDAO.assignUser
-        
         return Result.successResult(String.format("Created subscription for company [%s]", event.getPayload().getCompany().getName()));
+    }
+    
+    @Override
+    protected CreateSubscriptionEvent unmarshalEvent(InputStream is) throws JAXBException, IOException {
+        return super.unmarshalEvent(is);
     }
     
 }

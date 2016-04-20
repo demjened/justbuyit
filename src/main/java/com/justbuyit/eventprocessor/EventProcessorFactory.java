@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
@@ -23,6 +24,7 @@ public class EventProcessorFactory implements ApplicationContextAware {
     private ApplicationContext applicationContext;
     
     public EventProcessor<?> createEventProcessor(EventType type) {
+        Assert.notNull(type);
         
         switch (type) {
         case SUBSCRIPTION_ORDER:

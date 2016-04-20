@@ -38,6 +38,11 @@
       <artifactId>spring-context-support</artifactId>
       <version>${org.springframework-version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
 
     <!-- Security -->
     <dependency>
@@ -72,6 +77,21 @@
       <version>2.3.23</version>
     </dependency>
 
+    <!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.8.4</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Misc -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>

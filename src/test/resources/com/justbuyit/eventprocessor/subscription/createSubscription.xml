@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+  <type>SUBSCRIPTION_ORDER</type>
+  <marketplace>
+    <baseUrl>https://www.acme.com</baseUrl>
+    <partner>APPDIRECT</partner>
+  </marketplace>
+  <creator>
+    <address>
+      <firstName>Test</firstName>
+      <fullName>Test User</fullName>
+      <lastName>User</lastName>
+    </address>
+    <email>testuser@testco.com</email>
+    <firstName>Test</firstName>>
+    <language>en</language>
+    <lastName>User</lastName>
+    <openId>https://www.acme.com/openid/id/47cb8f55-1af6-5bfc-9a7d-8061d3aa0c97</openId>
+    <uuid>47cb8f55-1af6-5bfc-9a7d-8061d3aa0c97</uuid>
+  </creator>
+  <payload>
+    <company>
+      <country>US</country>
+      <name>tester</name>
+      <phoneNumber>1-800-333-3333</phoneNumber>
+      <uuid>385beb51-51ae-4ffe-8c05-3f35a9f99825</uuid>
+      <website>www.testco.com</website>
+    </company>
+    <order>
+      <editionCode>Standard</editionCode>
+      <pricingDuration>MONTHLY</pricingDuration>
+      <item>
+        <quantity>4</quantity>
+        <unit>USER</unit>
+      </item>
+    </order>
+  </payload>
+</event>

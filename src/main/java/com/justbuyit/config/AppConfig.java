@@ -16,7 +16,7 @@ import com.justbuyit.dao.SubscriptionDAO;
 import com.justbuyit.dao.UserDAO;
 
 @Configuration
-@ComponentScan(basePackages = { "com.justbuyit" })
+@ComponentScan(basePackages = { "com.justbuyit.auth", "com.justbuyit.dao", "com.justbuyit.eventprocessor" })
 public class AppConfig {
     
     @Value("#{environment['OAUTH_CONSUMER_KEY']}")

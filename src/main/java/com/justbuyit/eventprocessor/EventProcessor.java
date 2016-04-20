@@ -49,7 +49,7 @@ public abstract class EventProcessor<E extends Event<?>> {
     }
     
     @SuppressWarnings("unchecked")
-    E unmarshalEvent(InputStream is) throws JAXBException, IOException {
+    protected E unmarshalEvent(InputStream is) throws JAXBException, IOException {
         JAXBContext jaxbContext = JAXBContext.newInstance(getClassesToBeBound());
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         E event = (E) unmarshaller.unmarshal(is);
