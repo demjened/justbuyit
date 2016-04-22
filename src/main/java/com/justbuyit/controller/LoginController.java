@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.justbuyit.auth.OpenIdAuthorizer;
 import com.justbuyit.dao.UserDAO;
+import com.justbuyit.model.User;
 
 @Controller
 @RequestMapping
@@ -43,16 +45,27 @@ public class LoginController {
     }
     
     @RequestMapping(value = "/login/openid", method = RequestMethod.GET)
-    public String openid(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView openid(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         LOG.info("/login/openid");
 
         Identifier identity = openIdAuthorizer.verifyResponse(req);
         if (identity != null) {
-            // set authenticated
-            userDAO.setAuthenticated(identity.getIdentifier(), true);
+            
+            // fetch user
+            String openId = identity.getIdentifier();
+            User user = userDAO.findByOpenId(openId);
+            if (user == null) {
+                ModelAndView modelAndView = new ModelAndView();
+                modelAndView.addObject("message", "You have not been assigned to this application.");
+                modelAndView.setViewName("forbidden");
+                return modelAndView;
+            }
+            
+            // set authenticated flag
+            user.setAuthenticated(true);
         }
         
-        return "forward:/main";
+        return new ModelAndView("forward:/main");
     }
     
 }

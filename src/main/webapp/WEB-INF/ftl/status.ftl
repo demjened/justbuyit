@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>JustBuyIt!</title>
+  <title>JustBuyIt! :: Status</title>
 <head>
 <body>
   <b>Companies</b>

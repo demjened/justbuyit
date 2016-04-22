@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
 
 import com.justbuyit.exception.AccountNotFoundException;
 import com.justbuyit.exception.JustBuyItException;
-import com.justbuyit.exception.UserNotFoundException;
 import com.justbuyit.model.User;
 
 public class InMemoryUserDAO implements UserDAO {
@@ -18,6 +17,14 @@ public class InMemoryUserDAO implements UserDAO {
     private final MultiValuedMap<String, User> userAssignments = new ArrayListValuedHashMap<String, User>();
     
     private final static Logger LOG = LoggerFactory.getLogger(InMemoryUserDAO.class);
+    
+    @Override
+    public User findByOpenId(String openId) {
+        Optional<User> result = userAssignments.values().stream()
+                                                        .filter(u -> u.getOpenId().equals(openId))
+                                                        .findFirst();
+        return result.isPresent() ? result.get() : null;
+    }
     
     @Override
     public void assign(User user, String companyId) throws JustBuyItException {
@@ -41,7 +48,7 @@ public class InMemoryUserDAO implements UserDAO {
         
         userAssignments.removeMapping(companyId, user);
     }
-
+    
     @Override
     public void deleteAll(String companyId) throws JustBuyItException {
         LOG.info("Removing all assignments for company [{}]", companyId);
@@ -56,26 +63,21 @@ public class InMemoryUserDAO implements UserDAO {
     public boolean isAuthenticated(String openId) {
         LOG.info("Checking if user with OpenID [{}] is authenticated", openId);
         
-        Optional<User> result = userAssignments.values().stream()
-                                                        .filter(u -> u.getOpenId().equals(openId))
-                                                        .findFirst();
-        return result.isPresent() && result.get().isAuthenticated();
+        User user = findByOpenId(openId);
+        return user != null && user.isAuthenticated();
     }
 
     @Override
     public void setAuthenticated(String openId, boolean authenticated) throws JustBuyItException {
         LOG.info("Setting user with OpenID [{}] to authenticated: [{}]", openId, authenticated);
         
-        Optional<User> result = userAssignments.values().stream()
-                                                        .filter(u -> u.getOpenId().equals(openId))
-                                                        .findFirst();
-        
         // check if the user exists
-        if (!result.isPresent()) {
-            throw new UserNotFoundException(String.format("User with OpenId [%s] does not exist", openId));
+        User user = findByOpenId(openId);
+        if (user != null) {
+            user.setAuthenticated(authenticated);        
+        } else {
+            LOG.info("Could not find user [{}]", openId);
         }
-        
-        result.get().setAuthenticated(authenticated);        
     }
     
     /**

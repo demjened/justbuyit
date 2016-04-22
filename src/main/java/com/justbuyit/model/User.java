@@ -70,6 +70,31 @@ public class User {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((openId == null) ? 0 : openId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (openId == null) {
+            if (other.openId != null)
+                return false;
+        } else if (!openId.equals(other.openId))
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("User [email=").append(email).append(", language=").append(language).append(", firstName=").append(firstName).append(", lastName=")

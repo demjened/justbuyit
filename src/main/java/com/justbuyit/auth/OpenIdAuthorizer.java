@@ -68,7 +68,6 @@ public class OpenIdAuthorizer {
 
     // --- processing the authentication response ---
     public Identifier verifyResponse(HttpServletRequest httpReq) {
-        System.out.println("verify");
         try {
             // extract the parameters from the authentication response
             // (which comes in as a HTTP request from the OpenID provider)

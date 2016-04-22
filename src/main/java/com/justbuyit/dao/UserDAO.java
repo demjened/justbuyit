@@ -5,6 +5,8 @@ import com.justbuyit.model.User;
 
 public interface UserDAO {
 
+    public abstract User findByOpenId(String openId);
+    
     /**
      * Assigns the given user to the given company.
      * 

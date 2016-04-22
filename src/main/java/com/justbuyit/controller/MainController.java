@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.dao.UserDAO;
 import com.justbuyit.model.Company;
+import com.justbuyit.model.User;
 
 @Controller
 @RequestMapping("/")
@@ -29,6 +30,24 @@ public class MainController {
     
     @Autowired
     private UserDAO userDAO;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
+        String openId = req.getParameter("openid_url") != null ? req.getParameter("openid_url") : req.getParameter("openid.identity");
+        ModelAndView modelAndView = new ModelAndView();
+        if (userDAO.isAuthenticated(openId)) {
+
+            // fetch user by openId
+            User user = userDAO.findByOpenId(openId);
+            modelAndView.addObject("name", user.getFirstName());
+            modelAndView.setViewName("main");
+            return modelAndView;
+        } else {
+            modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
+            modelAndView.setViewName("forbidden");
+            return modelAndView;
+        }
+    }
     
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ModelAndView hello(ModelMap model) {
@@ -37,25 +56,7 @@ public class MainController {
         List<Company> companies = companyDAO.findAll();
         model.addAttribute("companies", companies);
         
-        return new ModelAndView("index", model);
+        return new ModelAndView("status", model);
     }
     
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
-    public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
-        
-        System.out.println(req.getParameterMap().keySet());
-        
-        String openId = req.getParameter("openid_url") != null ? req.getParameter("openid_url") : req.getParameter("openid.identity");
-        if (userDAO.isAuthenticated(openId)) {
-            // fetch user by openId
-            
-            ModelMap model = new ModelMap();
-            model.addAttribute("name", openId);
-            
-            return new ModelAndView("hello", model);
-        } else {
-            return null;
-        }
-    }
-
 }
