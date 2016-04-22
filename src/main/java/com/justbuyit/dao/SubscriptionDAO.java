@@ -5,12 +5,40 @@ import com.justbuyit.model.Order;
 
 public interface SubscriptionDAO {
 
-    public abstract void create(String id, Order order) throws JustBuyItException;
-    
-    public abstract void cancel(String id) throws JustBuyItException;
-    
-    public abstract void update(String id, Order order) throws JustBuyItException;
-    
-    public abstract Order find(String id) throws JustBuyItException;
-    
+    /**
+     * Creates a subscription for the given company.
+     * 
+     * @param companyId
+     *            the company ID
+     * @param order
+     *            the subscription order
+     * @throws JustBuyItException
+     *             if there was an error during the action
+     */
+    public abstract void create(String companyId, Order order) throws JustBuyItException;
+
+    /**
+     * Deletes the subscription of the given company.
+     * 
+     * @param companyId
+     *            the company ID
+     * @throws JustBuyItException
+     *             if there was an error during the action
+     */
+    public abstract void delete(String companyId) throws JustBuyItException;
+
+    /**
+     * Updates the subscription for the given company.
+     * 
+     * @param companyId
+     *            the company ID
+     * @param order
+     *            the new subscription order
+     * @throws JustBuyItException
+     *             if there was an error during the action
+     */
+    public abstract void update(String companyId, Order order) throws JustBuyItException;
+
+    // public abstract Order find(String id) throws JustBuyItException;
+
 }

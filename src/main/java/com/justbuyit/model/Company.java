@@ -11,7 +11,8 @@ public class Company {
     private String phoneNumber;
     private String uuid;
     private String website;
-
+    private String subscriptionStatus;
+    
     public String getCountry() {
         return country;
     }
@@ -58,6 +59,14 @@ public class Company {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
     }
 
     @Override

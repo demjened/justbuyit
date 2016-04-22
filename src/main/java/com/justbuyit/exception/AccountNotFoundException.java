@@ -1,18 +1,18 @@
 package com.justbuyit.exception;
 
-public class SubscriptionNotExistsException extends JustBuyItException {
+public class AccountNotFoundException extends JustBuyItException {
 
     private static final long serialVersionUID = 4385364720383480857L;
 
-    public SubscriptionNotExistsException(String message, Throwable cause) {
+    public AccountNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public SubscriptionNotExistsException(String message) {
+    public AccountNotFoundException(String message) {
         super(message);
     }
 
-    public SubscriptionNotExistsException(Throwable cause) {
+    public AccountNotFoundException(Throwable cause) {
         super(cause);
     }
     

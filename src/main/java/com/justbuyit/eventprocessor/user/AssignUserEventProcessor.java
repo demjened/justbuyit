@@ -1,5 +1,8 @@
 package com.justbuyit.eventprocessor.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.UserDAO;
 import com.justbuyit.eventprocessor.EventProcessor;
@@ -10,6 +13,8 @@ import com.justbuyit.model.result.Result;
 
 public class AssignUserEventProcessor extends EventProcessor<AssignUserEvent> {
 
+    private final static Logger LOG = LoggerFactory.getLogger(AssignUserEventProcessor.class);
+
     private UserDAO userDAO;
 
     public AssignUserEventProcessor(ConnectionSigner connectionSigner, UserDAO userDAO) {
@@ -19,14 +24,14 @@ public class AssignUserEventProcessor extends EventProcessor<AssignUserEvent> {
 
     @Override
     protected Result processEvent(AssignUserEvent event) throws JustBuyItException {
-        String id = event.getPayload().getAccount().getAccountIdentifier();
+        LOG.debug("Processing event [{}]", event);
+
+        String companyId = event.getPayload().getAccount().getAccountIdentifier();
 
         // assign user to company
-        userDAO.assign(event.getPayload().getUser(), id);
+        userDAO.assign(event.getPayload().getUser(), companyId);
         
-        Result result = new Result();
-        result.setMessage(String.format("Cancelled subscription for company [%s]", id));
-        return result;
+        return Result.successResult(String.format("Assigned user [%s] to company [%s]", event.getPayload().getUser().getUuid(), companyId));
     }
 
     @Override

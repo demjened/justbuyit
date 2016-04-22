@@ -16,6 +16,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
+import com.justbuyit.dao.SubscriptionDAO;
+import com.justbuyit.dao.UserDAO;
 import com.justbuyit.exception.UserAlreadyExistsException;
 import com.justbuyit.model.event.subscription.CreateSubscriptionEvent;
 import com.justbuyit.model.result.Result;
@@ -29,8 +31,14 @@ public class CreateSubscriptionEventProcessorTest {
     @Mock
     CompanyDAO mockCompanyDAO;
     
+    @Mock
+    SubscriptionDAO mockSubscriptionDAO;
+    
+    @Mock
+    UserDAO mockUserDAO;
+    
     @InjectMocks
-    private CreateSubscriptionEventProcessor eventProcessor = new CreateSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
+    private CreateSubscriptionEventProcessor eventProcessor = new CreateSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO, mockSubscriptionDAO, mockUserDAO);
 
     @Test
     public void testUnmarshal() throws Exception {

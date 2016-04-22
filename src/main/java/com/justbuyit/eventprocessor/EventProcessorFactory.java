@@ -30,7 +30,9 @@ public class EventProcessorFactory implements ApplicationContextAware {
         case SUBSCRIPTION_ORDER:
             return new CreateSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class), 
-                    applicationContext.getBean(CompanyDAO.class));
+                    applicationContext.getBean(CompanyDAO.class),
+                    applicationContext.getBean(SubscriptionDAO.class),
+                    applicationContext.getBean(UserDAO.class));
         case SUBSCRIPTION_CHANGE:
             return new ChangeSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class), 
@@ -39,7 +41,8 @@ public class EventProcessorFactory implements ApplicationContextAware {
             return new CancelSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
                     applicationContext.getBean(CompanyDAO.class),
-                    applicationContext.getBean(SubscriptionDAO.class));
+                    applicationContext.getBean(SubscriptionDAO.class),
+                    applicationContext.getBean(UserDAO.class));
         case SUBSCRIPTION_NOTICE:
             return new NotifySubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),

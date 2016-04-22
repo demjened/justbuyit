@@ -11,6 +11,7 @@ public class User {
     private String lastName;
     private String openId;
     private String uuid;
+    private boolean authenticated;
 
     public String getEmail() {
         return email;
@@ -58,6 +59,14 @@ public class User {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+    
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
     }
 
     @Override

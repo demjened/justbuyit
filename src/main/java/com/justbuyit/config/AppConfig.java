@@ -8,15 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.dao.InMemoryCompanyDAO;
-import com.justbuyit.dao.InMemoryProfileDAO;
 import com.justbuyit.dao.InMemorySubscriptionDAO;
 import com.justbuyit.dao.InMemoryUserDAO;
-import com.justbuyit.dao.ProfileDAO;
 import com.justbuyit.dao.SubscriptionDAO;
 import com.justbuyit.dao.UserDAO;
 
 @Configuration
-@ComponentScan(basePackages = { "com.justbuyit.auth", "com.justbuyit.dao", "com.justbuyit.eventprocessor" })
+@ComponentScan(basePackages = { "com.justbuyit.auth", "com.justbuyit.eventprocessor" })
 public class AppConfig {
     
     @Value("#{environment['OAUTH_CONSUMER_KEY']}")
@@ -43,11 +41,6 @@ public class AppConfig {
     @Bean
     public UserDAO userDAO() {
         return new InMemoryUserDAO();
-    }
-    
-    @Bean
-    public ProfileDAO profileDAO() {
-        return new InMemoryProfileDAO();
     }
     
 }

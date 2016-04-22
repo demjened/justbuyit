@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.google.inject.internal.Maps;
+import com.justbuyit.exception.AccountNotFoundException;
 import com.justbuyit.exception.JustBuyItException;
-import com.justbuyit.exception.SubscriptionAlreadyExistsException;
-import com.justbuyit.exception.SubscriptionNotExistsException;
+import com.justbuyit.exception.UserAlreadyExistsException;
 import com.justbuyit.model.Order;
 
 public class InMemorySubscriptionDAO implements SubscriptionDAO {
@@ -19,45 +19,56 @@ public class InMemorySubscriptionDAO implements SubscriptionDAO {
     private final Map<String, Order> subscriptions = Maps.newHashMap();
     
     @Override
-    public void create(String id, Order order) throws JustBuyItException {
-        Assert.notNull(id);
+    public void create(String companyId, Order order) throws JustBuyItException {
+        Assert.notNull(companyId);
         Assert.notNull(order);
         
-        if (subscriptions.containsKey(id)) {
-            throw new SubscriptionAlreadyExistsException(String.format("Company with ID [%s] is already subscribed", id));
+        LOG.info("Creating subscription for company ID [{}]", companyId);
+        
+        // check if the company already has a subscription
+        if (subscriptions.containsKey(companyId)) {
+            throw new UserAlreadyExistsException(String.format("Company with ID [%s] is already subscribed", companyId));
         }
         
-        LOG.info("...");
-        subscriptions.put(id, order);
+        subscriptions.put(companyId, order);
     }
 
     @Override
-    public void cancel(String id) throws JustBuyItException {
-        Assert.notNull(id);
-        checkSubscriptionExists(id);
-
-        subscriptions.remove(id);
-    }
-
-    @Override
-    public void update(String id, Order order) throws JustBuyItException {
-        Assert.notNull(id);
-        Assert.notNull(order);
-        checkSubscriptionExists(id);
-
-        subscriptions.put(id, order);
-    }
-
-    @Override
-    public Order find(String id) throws JustBuyItException {
-        Assert.notNull(id);
+    public void delete(String companyId) throws JustBuyItException {
+        Assert.notNull(companyId);
         
-        return subscriptions.get(id);
+        LOG.info("Removing subscription for company ID [{}]", companyId);
+        
+        // check if a subscription exists for the company
+        checkSubscriptionExists(companyId);
+
+        subscriptions.remove(companyId);
     }
-    
-    private void checkSubscriptionExists(String id) throws SubscriptionNotExistsException {
-        if (!subscriptions.containsKey(id)) {
-            throw new SubscriptionNotExistsException(String.format("Company with ID [%s] has no subscriptions", id));
+
+    @Override
+    public void update(String companyId, Order order) throws JustBuyItException {
+        Assert.notNull(companyId);
+        Assert.notNull(order);
+
+        LOG.info("Updating subscription for company ID [{}]", companyId);
+        
+        // check if a subscription exists for the company
+        checkSubscriptionExists(companyId);
+
+        subscriptions.put(companyId, order);
+    }
+
+    /**
+     * Checks if a subscription exists for the given company.
+     * 
+     * @param companyId
+     *            the company ID
+     * @throws AccountNotFoundException
+     *             if the company/subscription does not exist
+     */
+    private void checkSubscriptionExists(String companyId) throws AccountNotFoundException {
+        if (!subscriptions.containsKey(companyId)) {
+            throw new AccountNotFoundException(String.format("Company with ID [%s] has no subscriptions", companyId));
         }
     }
 

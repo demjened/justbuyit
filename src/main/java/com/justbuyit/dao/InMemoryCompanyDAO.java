@@ -5,17 +5,15 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.google.inject.internal.Lists;
 import com.google.inject.internal.Maps;
+import com.justbuyit.exception.AccountNotFoundException;
 import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.exception.UserAlreadyExistsException;
-import com.justbuyit.exception.UserNotFoundException;
 import com.justbuyit.model.Company;
 
-@Repository
 public class InMemoryCompanyDAO implements CompanyDAO {
 
     private final static Logger LOG = LoggerFactory.getLogger(InMemoryCompanyDAO.class);
@@ -23,26 +21,30 @@ public class InMemoryCompanyDAO implements CompanyDAO {
     private final Map<String, Company> companies = Maps.newHashMap();
     
     @Override
-    public void add(Company company) throws JustBuyItException {
+    public String add(Company company) throws JustBuyItException {
         Assert.notNull(company);
+        Assert.notNull(company.getUuid());
         
-        String id = company.getUuid();
-        if (companies.containsKey(id)) {
-            throw new UserAlreadyExistsException(String.format("Company [%s] already exists with ID [%s]", company.getName(), id));
+        String companyId = company.getUuid();
+        LOG.info("Adding company with ID [{}]", companyId);
+        
+        // check if the company already exists
+        if (companies.containsKey(companyId)) {
+            throw new UserAlreadyExistsException(String.format("Company [%s] already exists with ID [%s]", company.getName(), companyId));
         }
         
-        LOG.info("Adding company with ID [{}]", id);
-        companies.put(id, company);
+        companies.put(companyId, company);
+        return companyId;
     }
     
     @Override
-    public void delete(String id) throws JustBuyItException {
-        if (!companies.containsKey(id)) {
-            throw new UserNotFoundException(String.format("Company [%s] does not exist", id));
-        }
+    public void delete(String companyId) throws JustBuyItException {
+        LOG.info("Deleting company with ID [{}]", companyId);
 
-        LOG.info("Deleting company with ID [{}]", id);
-        companies.remove(id);
+        // check if the company exists
+        checkCompanyExists(companyId);
+
+        companies.remove(companyId);
     }
     
     @Override
@@ -50,6 +52,30 @@ public class InMemoryCompanyDAO implements CompanyDAO {
         LOG.info("Fetching all companies");
         
         return Lists.newArrayList(companies.values());
+    }
+    
+    @Override
+    public void updateSubscriptionStatus(String companyId, String subscriptionStatus) throws JustBuyItException {
+        LOG.info("Updating subscription status for company [{}] to [{}]", companyId, subscriptionStatus);
+        
+        // check if the company exists
+        checkCompanyExists(companyId);
+        
+        companies.get(companyId).setSubscriptionStatus(subscriptionStatus);
+    }
+    
+    /**
+     * Checks if the given company exists.
+     * 
+     * @param companyId
+     *            the company ID
+     * @throws AccountNotFoundException
+     *             if the company/subscription does not exist
+     */
+    private void checkCompanyExists(String companyId) throws AccountNotFoundException {
+        if (!companies.containsKey(companyId)) {
+            throw new AccountNotFoundException(String.format("Company [%s] does not exist", companyId));
+        }
     }
     
 }

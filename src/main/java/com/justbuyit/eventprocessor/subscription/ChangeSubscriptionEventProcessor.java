@@ -1,5 +1,8 @@
 package com.justbuyit.eventprocessor.subscription;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.SubscriptionDAO;
 import com.justbuyit.eventprocessor.EventProcessor;
@@ -9,6 +12,8 @@ import com.justbuyit.model.event.subscription.ChangeSubscriptionEvent.ChangeSubs
 import com.justbuyit.model.result.Result;
 
 public class ChangeSubscriptionEventProcessor extends EventProcessor<ChangeSubscriptionEvent> {
+
+    private final static Logger LOG = LoggerFactory.getLogger(ChangeSubscriptionEventProcessor.class);
 
     private SubscriptionDAO subscriptionDAO;
     
@@ -24,13 +29,12 @@ public class ChangeSubscriptionEventProcessor extends EventProcessor<ChangeSubsc
 
     @Override
     protected Result processEvent(ChangeSubscriptionEvent event) throws JustBuyItException {
+        LOG.debug("Processing event [{}]", event);
 
         // change subscription
         subscriptionDAO.update(event.getPayload().getAccount().getAccountIdentifier(), event.getPayload().getOrder());
         
-        Result result = new Result();
-        result.setMessage(String.format("Changed subscription for company [%s]", event.getPayload().getAccount().getAccountIdentifier()));
-        return result;
+        return Result.successResult(String.format("Changed subscription for company [%s]", event.getPayload().getAccount().getAccountIdentifier()));
     }
     
 }

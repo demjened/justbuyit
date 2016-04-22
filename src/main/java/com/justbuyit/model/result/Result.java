@@ -7,7 +7,8 @@ public class Result {
 
     private boolean success;
     private String message;
-    private String errorCode;;
+    private String accountIdentifier;
+    private String errorCode;
 
     public Result() {
     }
@@ -17,7 +18,13 @@ public class Result {
         result.setSuccess(true);
         result.setMessage(message);
         return result;
-    }    
+    }
+    
+    public static Result successResult(String message, String accountIdentifier) {
+        Result result = Result.successResult(message);
+        result.setAccountIdentifier(accountIdentifier);
+        return result;
+    }
 
     public static Result errorResult(String errorCode, String message) {
         Result result = new Result();
@@ -41,6 +48,14 @@ public class Result {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getAccountIdentifier() {
+        return accountIdentifier;
+    }
+
+    public void setAccountIdentifier(String accountIdentifier) {
+        this.accountIdentifier = accountIdentifier;
     }
 
     public String getErrorCode() {

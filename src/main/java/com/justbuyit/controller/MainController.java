@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.justbuyit.dao.CompanyDAO;
-import com.justbuyit.dao.ProfileDAO;
 import com.justbuyit.dao.UserDAO;
 import com.justbuyit.model.Company;
-import com.justbuyit.model.User;
 
 @Controller
 @RequestMapping("/")
@@ -32,18 +30,12 @@ public class MainController {
     @Autowired
     private UserDAO userDAO;
     
-    @Autowired
-    private ProfileDAO profileDAO;
-    
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView hello(ModelMap model) {
         LOG.info("/");
         
         List<Company> companies = companyDAO.findAll();
         model.addAttribute("companies", companies);
-        
-        List<User> users = userDAO.findAll();
-        model.addAttribute("users", users);
         
         return new ModelAndView("index", model);
     }
@@ -54,7 +46,7 @@ public class MainController {
         System.out.println(req.getParameterMap().keySet());
         
         String openId = req.getParameter("openid_url") != null ? req.getParameter("openid_url") : req.getParameter("openid.identity");
-        if (profileDAO.containsOpenId(openId)) {
+        if (userDAO.isAuthenticated(openId)) {
             // fetch user by openId
             
             ModelMap model = new ModelMap();

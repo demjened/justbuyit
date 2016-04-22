@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.justbuyit.auth.OpenIdAuthorizer;
-import com.justbuyit.dao.ProfileDAO;
+import com.justbuyit.dao.UserDAO;
 
 @Controller
 @RequestMapping
@@ -24,7 +24,7 @@ public class LoginController {
     private OpenIdAuthorizer openIdAuthorizer;
     
     @Autowired
-    private ProfileDAO profileDAO;
+    private UserDAO userDAO;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -32,8 +32,8 @@ public class LoginController {
         
         LOG.info("/login :: {}", openId);
         
-        if (profileDAO.containsOpenId(openId)) {
-            LOG.debug("User with openId [{}] already authenticated, forwarding to /main");
+        if (userDAO.isAuthenticated(openId)) {
+            LOG.debug("User with openId [{}] is already authenticated, forwarding to /main");
             return "forward:/main";
         } else {
             LOG.debug("User with openId [{}] has not been authenticated yet, redirecting to /openid");
@@ -48,8 +48,8 @@ public class LoginController {
 
         Identifier identity = openIdAuthorizer.verifyResponse(req);
         if (identity != null) {
-            // add to profiles
-            profileDAO.addOpenId(identity.getIdentifier());
+            // set authenticated
+            userDAO.setAuthenticated(identity.getIdentifier(), true);
         }
         
         return "forward:/main";
