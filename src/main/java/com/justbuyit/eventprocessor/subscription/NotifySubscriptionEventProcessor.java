@@ -21,10 +21,11 @@ public class NotifySubscriptionEventProcessor extends EventProcessor<NotifySubsc
     private SubscriptionDAO subscriptionDAO;
     private UserDAO userDAO;
 
-    public NotifySubscriptionEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO, SubscriptionDAO subscriptionDAO) {
+    public NotifySubscriptionEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO, SubscriptionDAO subscriptionDAO, UserDAO userDAO) {
         super(connectionSigner);
         this.companyDAO = companyDAO;
         this.subscriptionDAO = subscriptionDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -33,15 +34,15 @@ public class NotifySubscriptionEventProcessor extends EventProcessor<NotifySubsc
 
         String companyId = event.getPayload().getAccount().getAccountIdentifier();
         String noticeType = event.getPayload().getNotice().getType();
-        if (noticeType.equals("CLOSED")){
+        if (noticeType.equals("CLOSED")) {
             // cancel subscription
             subscriptionDAO.delete(companyId);
-            
+
             // delete company
             companyDAO.delete(companyId);
-            
+
             // remove all users
-            userDAO.removeAll(companyId);
+            userDAO.deleteAll(companyId);
         } else if (!noticeType.equals("UPCOMING_INVOICE")) {
             // update subscription status
             String subscriptionStatus = event.getPayload().getAccount().getStatus();

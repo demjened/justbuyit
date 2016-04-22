@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+  <type>SUBSCRIPTION_CHANGE</type>
+  <marketplace>
+    <baseUrl>https://www.acme.com</baseUrl>
+    <partner>APPDIRECT</partner>
+    </marketplace>
+  <creator>
+    <address>
+      <city>San Jose</city>
+      <country>US</country>
+      <firstName>Test</firstName>
+      <fullName>Test User</fullName>
+      <lastName>User</lastName>
+      <state>CA</state>
+      <street1>1 Main St</street1>
+      <zip>95131</zip>
+    </address>
+    <email>testuser@testco.com</email>
+    <firstName>Test</firstName>
+    <language>en</language>
+    <lastName>User</lastName>
+    <openId>https://www.acme.com/openid/id/7f59aad1-85cd-4c04-b35b-906ee53acc71</openId>
+    <uuid>7f59aad1-85  "event": {cd-4c04-b35b-906ee53acc71</uuid>
+  </creator>
+  <payload>
+    <account>
+      <accountIdentifier>206123</accountIdentifier>
+      <status>ACTIVE</status>
+    </account>
+    <order>
+      <editionCode>DME</editionCode>
+      <pricingDuration>DAILY</pricingDuration>
+      <item>
+        <quantity>0</quantity>
+        <unit>GIGABYTE</unit>
+      </item>
+    </order>
+  </payload>
+</event>

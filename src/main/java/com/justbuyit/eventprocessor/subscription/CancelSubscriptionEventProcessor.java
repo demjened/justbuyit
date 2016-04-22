@@ -41,7 +41,7 @@ public class CancelSubscriptionEventProcessor extends EventProcessor<CancelSubsc
         companyDAO.delete(companyId);
         
         // remove all users
-        userDAO.removeAll(companyId);
+        userDAO.deleteAll(companyId);
 
         return Result.successResult(String.format("Cancelled subscription for company [%s]", companyId));
     }

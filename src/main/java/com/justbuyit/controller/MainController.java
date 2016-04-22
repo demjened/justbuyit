@@ -30,9 +30,9 @@ public class MainController {
     @Autowired
     private UserDAO userDAO;
     
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ModelAndView hello(ModelMap model) {
-        LOG.info("/");
+        LOG.info("/status");
         
         List<Company> companies = companyDAO.findAll();
         model.addAttribute("companies", companies);
@@ -40,7 +40,7 @@ public class MainController {
         return new ModelAndView("index", model);
     }
     
-    @RequestMapping(value="/main", method = RequestMethod.GET)
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
         
         System.out.println(req.getParameterMap().keySet());

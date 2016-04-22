@@ -20,10 +20,8 @@ public class ConnectionSigner {
     }
     
     public HttpURLConnection openSignedConnection(URL url) throws IOException, OAuthException {
-        System.out.println("URL: " + url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         consumer.sign(conn);
-        System.out.println("Signed URL: " + conn.getURL().toString()); // FIXME
         conn.connect();
         return conn;
     }

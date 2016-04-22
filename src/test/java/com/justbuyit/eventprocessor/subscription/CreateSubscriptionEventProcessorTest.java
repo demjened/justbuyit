@@ -1,10 +1,5 @@
 package com.justbuyit.eventprocessor.subscription;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +16,12 @@ import com.justbuyit.dao.UserDAO;
 import com.justbuyit.exception.UserAlreadyExistsException;
 import com.justbuyit.model.event.subscription.CreateSubscriptionEvent;
 import com.justbuyit.model.result.Result;
+import com.justbuyit.util.TestUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateSubscriptionEventProcessorTest {
+    
+    private final static String SAMPLE_FILE = "com/justbuyit/eventprocessor/subscription/createSubscription.xml";
 
     @Mock
     ConnectionSigner mockConnectionSigner;
@@ -42,32 +40,42 @@ public class CreateSubscriptionEventProcessorTest {
 
     @Test
     public void testUnmarshal() throws Exception {
-        Assert.assertEquals(CreateSubscriptionEvent.class, eventProcessor.unmarshalEvent((getSampleFile())).getClass());
+        Assert.assertEquals(CreateSubscriptionEvent.class, eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE)).getClass());
     }
     
     @Test
     public void testProcessEvent() throws Exception {
-        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent((getSampleFile()));
+        Mockito.when(mockCompanyDAO.add(Matchers.anyObject())).thenReturn("123");
+        
+        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
         Result result = eventProcessor.processEvent(event);
         
+        // verify that the entities get created
         Mockito.verify(mockCompanyDAO).add(event.getPayload().getCompany());
+        Mockito.verify(mockSubscriptionDAO).add("123", event.getPayload().getOrder());
+        Mockito.verify(mockUserDAO).assign(event.getCreator(), "123");
         
         Assert.assertTrue(result.isSuccess());
     }
     
     @Test(expected = UserAlreadyExistsException.class)
     public void testProcessEventWhenCompanyExists() throws Exception {
-        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent((getSampleFile()));
+        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
         
         Mockito.doThrow(new UserAlreadyExistsException("Exists")).when(mockCompanyDAO).add(Matchers.any());
         
+        // verify that we get an exception
         eventProcessor.processEvent(event);
     }
     
-    private InputStream getSampleFile() throws FileNotFoundException {
-        File resourcesDirectory = new File("src/test/resources");
-        File eventXML = new File(resourcesDirectory, "com/justbuyit/eventprocessor/subscription/createSubscription.xml");
-        return new FileInputStream(eventXML);
+    @Test(expected = UserAlreadyExistsException.class)
+    public void testProcessEventWhenSubscriptionExists() throws Exception {
+        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
+        
+        Mockito.doThrow(new UserAlreadyExistsException("Exists")).when(mockCompanyDAO).add(Matchers.any());
+        
+        // verify that we get an exception
+        eventProcessor.processEvent(event);
     }
     
 }

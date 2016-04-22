@@ -15,7 +15,7 @@ public interface SubscriptionDAO {
      * @throws JustBuyItException
      *             if there was an error during the action
      */
-    public abstract void create(String companyId, Order order) throws JustBuyItException;
+    public abstract void add(String companyId, Order order) throws JustBuyItException;
 
     /**
      * Deletes the subscription of the given company.

@@ -19,7 +19,7 @@ public class InMemorySubscriptionDAO implements SubscriptionDAO {
     private final Map<String, Order> subscriptions = Maps.newHashMap();
     
     @Override
-    public void create(String companyId, Order order) throws JustBuyItException {
+    public void add(String companyId, Order order) throws JustBuyItException {
         Assert.notNull(companyId);
         Assert.notNull(order);
         

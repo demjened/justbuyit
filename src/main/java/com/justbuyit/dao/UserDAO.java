@@ -37,7 +37,7 @@ public interface UserDAO {
      * @throws JustBuyItException
      *             if there was an error during the action
      */
-    public abstract void removeAll(String companyId) throws JustBuyItException;
+    public abstract void deleteAll(String companyId) throws JustBuyItException;
 
     /**
      * Checks whether the given user is already authenticated.

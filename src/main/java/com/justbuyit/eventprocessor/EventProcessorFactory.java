@@ -47,7 +47,8 @@ public class EventProcessorFactory implements ApplicationContextAware {
             return new NotifySubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
                     applicationContext.getBean(CompanyDAO.class),
-                    applicationContext.getBean(SubscriptionDAO.class));
+                    applicationContext.getBean(SubscriptionDAO.class),
+                    applicationContext.getBean(UserDAO.class));
         case USER_ASSIGNMENT:
             return new AssignUserEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),

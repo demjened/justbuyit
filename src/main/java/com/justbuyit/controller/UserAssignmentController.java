@@ -24,7 +24,7 @@ public class UserAssignmentController {
 
     @RequestMapping(value="/assignment", method = RequestMethod.GET, produces = "application/xml")
     public Result assignment(@RequestParam("url") String urlStr) throws Exception {
-        LOG.info("/user/assign :: {}", urlStr);
+        LOG.info("/user/assignment :: {}", urlStr);
         
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.USER_ASSIGNMENT);
         return processor.process(urlStr);

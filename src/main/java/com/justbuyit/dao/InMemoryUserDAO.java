@@ -43,7 +43,7 @@ public class InMemoryUserDAO implements UserDAO {
     }
 
     @Override
-    public void removeAll(String companyId) throws JustBuyItException {
+    public void deleteAll(String companyId) throws JustBuyItException {
         LOG.info("Removing all assignments for company [{}]", companyId);
 
         // check if the company exists

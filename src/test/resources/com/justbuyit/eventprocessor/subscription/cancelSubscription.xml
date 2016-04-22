@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+  <type>SUBSCRIPTION_CANCEL</type>
+  <marketplace>
+    <baseUrl>https://www.acme.com</baseUrl>
+    <partner>APPDIRECT</partner>>
+  </marketplace>
+  <creator>
+    <address>
+      <city>Sommerville</city>
+      <country>US</country>
+      <firstName>Test</firstName>
+      <fullName>Test User</fullName>
+      <lastName>User</lastName>
+      <phone>5305556465</phone>
+      <state>MA</state>
+      <street1>55 Grove St</street1>
+      <zip>02144</zip>
+    </address>
+    <email>testuser@testco.com</email>
+    <firstName>Test</firstName>
+    <language>en</language>
+    <lastName>User</lastName>
+    <openId>https://www.acme.com/openid/id/d124bf8b-0b0b-40d3-831b-b7f5a514d487</openId>
+    <uuid>d124bf8b-0b0b-40d3-831b-b7f5a514d487</uuid>
+  </creator>
+  <payload>
+    <account>
+      <accountIdentifier>9d6fca98-aa94-462b-85fa-118804ad3fe3</accountIdentifier>
+      <status>ACTIVE</status>
+    </account>
+  </payload>
+</event>
