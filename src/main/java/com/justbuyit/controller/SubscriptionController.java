@@ -2,7 +2,6 @@ package com.justbuyit.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections4.EnumerationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +41,11 @@ public class SubscriptionController extends ExceptionHandlingController {
     @ResponseBody
     @RequestMapping("/create")
     public Result create(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
-        System.out.println("headers: " + EnumerationUtils.toList(req.getHeaderNames()));
-
         LOG.info("/subscription/create :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.SUBSCRIPTION_ORDER);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
     /**
@@ -61,12 +58,12 @@ public class SubscriptionController extends ExceptionHandlingController {
      */
     @ResponseBody
     @RequestMapping("/change")
-    public Result change(@RequestParam("url") String urlStr) throws Exception {
+    public Result change(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
         LOG.info("/subscription/change :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.SUBSCRIPTION_CHANGE);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
     /**
@@ -79,12 +76,12 @@ public class SubscriptionController extends ExceptionHandlingController {
      */
     @ResponseBody
     @RequestMapping("/cancel")
-    public Result cancel(@RequestParam("url") String urlStr) throws Exception {
+    public Result cancel(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
         LOG.info("/subscription/cancel :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.SUBSCRIPTION_CANCEL);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
     /**
@@ -97,12 +94,12 @@ public class SubscriptionController extends ExceptionHandlingController {
      */
     @ResponseBody
     @RequestMapping("/status")
-    public Result status(@RequestParam("url") String urlStr) throws Exception {
+    public Result status(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
         LOG.info("/subscription/status :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.SUBSCRIPTION_NOTICE);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
 }

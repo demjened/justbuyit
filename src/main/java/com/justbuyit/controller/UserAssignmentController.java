@@ -1,5 +1,7 @@
 package com.justbuyit.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,12 @@ public class UserAssignmentController extends ExceptionHandlingController {
      * @throws Exception
      */
     @RequestMapping("/assignment")
-    public Result assignment(@RequestParam("url") String urlStr) throws Exception {
+    public Result assignment(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
         LOG.info("/user/assignment :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.USER_ASSIGNMENT);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
     /**
@@ -51,12 +53,12 @@ public class UserAssignmentController extends ExceptionHandlingController {
      * @throws Exception
      */
     @RequestMapping("/unassignment")
-    public Result unassignment(@RequestParam("url") String urlStr) throws Exception {
+    public Result unassignment(@RequestParam("url") String urlStr, HttpServletRequest req) throws Exception {
         LOG.info("/user/unassignment :: {}", urlStr);
 
         // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.USER_UNASSIGNMENT);
-        return processor.process(urlStr);
+        return processor.process(req, urlStr);
     }
 
 }

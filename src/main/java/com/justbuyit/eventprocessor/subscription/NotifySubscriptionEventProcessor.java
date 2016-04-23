@@ -1,6 +1,6 @@
 package com.justbuyit.eventprocessor.subscription;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
 import com.justbuyit.eventprocessor.EventProcessor;
@@ -17,8 +17,8 @@ public class NotifySubscriptionEventProcessor extends EventProcessor<NotifySubsc
 
     private CompanyDAO companyDAO;
 
-    public NotifySubscriptionEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO) {
-        super(connectionSigner);
+    public NotifySubscriptionEventProcessor(OAuthService oAuthService, CompanyDAO companyDAO) {
+        super(oAuthService);
         this.companyDAO = companyDAO;
     }
 

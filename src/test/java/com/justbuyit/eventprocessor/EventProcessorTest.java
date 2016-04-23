@@ -3,7 +3,6 @@ package com.justbuyit.eventprocessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.xml.bind.JAXBException;
 
@@ -16,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.eventprocessor.subscription.CancelSubscriptionEventProcessor;
 import com.justbuyit.exception.AccountNotFoundException;
 import com.justbuyit.exception.JustBuyItException;
@@ -30,13 +29,13 @@ import com.justbuyit.model.result.Result;
 public class EventProcessorTest {
 
     @Mock
-    ConnectionSigner mockConnectionSigner;
+    OAuthService mockOAuthService;
     
     @Mock
     HttpURLConnection conn;
     
     @InjectMocks
-    private CancelSubscriptionEventProcessor accountNotFoundThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null) {
+    private CancelSubscriptionEventProcessor accountNotFoundThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockOAuthService, null) {
         @Override
         protected Result processEvent(CancelSubscriptionEvent event) throws JustBuyItException {
             throw new AccountNotFoundException("Error");
@@ -49,7 +48,7 @@ public class EventProcessorTest {
     };
     
     @InjectMocks
-    private CancelSubscriptionEventProcessor runtimeExceptionThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null) {
+    private CancelSubscriptionEventProcessor runtimeExceptionThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockOAuthService, null) {
         @Override
         protected Result processEvent(CancelSubscriptionEvent event) throws JustBuyItException {
             throw new RuntimeException("Runtime Error");
@@ -63,20 +62,20 @@ public class EventProcessorTest {
     
     @Test
     public void testProcessWithJustBuyItException() throws Exception {
-        Mockito.when(mockConnectionSigner.openSignedConnection(Matchers.anyObject())).thenReturn(conn);
+        Mockito.when(mockOAuthService.openSignedConnection(Matchers.anyObject())).thenReturn(conn);
         
-        Result result = accountNotFoundThrowingEventProcessor.process("http://url");
+        Result result = accountNotFoundThrowingEventProcessor.process(null, "http://url");
         Assert.assertFalse(result.isSuccess());
         Assert.assertEquals("ACCOUNT_NOT_FOUND", result.getErrorCode());
         
-        Mockito.verify(mockConnectionSigner).openSignedConnection(new URL("http://url"));
+        Mockito.verify(mockOAuthService).openSignedConnection("http://url");
     }
     
     @Test
     public void testProcessWithRuntimeException() throws Exception {
-        Mockito.when(mockConnectionSigner.openSignedConnection(Matchers.anyObject())).thenReturn(conn);
+        Mockito.when(mockOAuthService.openSignedConnection(Matchers.anyObject())).thenReturn(conn);
         
-        Result result = runtimeExceptionThrowingEventProcessor.process("http://url");
+        Result result = runtimeExceptionThrowingEventProcessor.process(null, "http://url");
         Assert.assertFalse(result.isSuccess());
         Assert.assertEquals("UNKNOWN_ERROR", result.getErrorCode());
     }

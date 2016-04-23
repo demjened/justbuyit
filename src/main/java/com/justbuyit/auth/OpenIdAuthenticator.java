@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @SuppressWarnings("rawtypes")
-public class OpenIdAuthorizer {
+public class OpenIdAuthenticator {
 
     public ConsumerManager manager = new ConsumerManager();
 

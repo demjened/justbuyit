@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.justbuyit.auth.OpenIdAuthorizer;
+import com.justbuyit.auth.OpenIdAuthenticator;
 import com.justbuyit.dao.UserDAO;
 import com.justbuyit.entity.User;
 
@@ -21,13 +21,13 @@ import com.justbuyit.entity.User;
  * Controller for logging in to the application and handling OpenID-based authentication.
  */
 @Controller
-@RequestMapping
+@RequestMapping(value = "/login", method = RequestMethod.GET)
 public class LoginController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private OpenIdAuthorizer openIdAuthorizer;
+    private OpenIdAuthenticator openIdAuthenticator;
 
     @Autowired
     private UserDAO userDAO;
@@ -41,7 +41,7 @@ public class LoginController extends ExceptionHandlingController {
      *            the response
      * @return the next model-and-view
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping
     public ModelAndView login(HttpServletRequest req, HttpServletResponse resp) {
         String openId = req.getParameter("openid_url");
         LOG.info("/login :: {}", openId);
@@ -55,7 +55,7 @@ public class LoginController extends ExceptionHandlingController {
                 return new ModelAndView("forward:/");
             } else {
                 LOG.debug("User with openId [{}] has not been authenticated yet, redirecting to /openid", openId);
-                openIdAuthorizer.authRequest(openId, req.getRequestURL().append("/openid").toString(), req, resp);
+                openIdAuthenticator.authRequest(openId, req.getRequestURL().append("/openid").toString(), req, resp);
                 return null;
             }
         }
@@ -75,13 +75,13 @@ public class LoginController extends ExceptionHandlingController {
      * @return the next model-and-view
      * @throws Exception
      */
-    @RequestMapping(value = "/login/openid", method = RequestMethod.GET)
+    @RequestMapping("/openid")
     public ModelAndView openid(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         LOG.info("/login/openid");
 
         // verify OpenID authentication response
         String openId;
-        Identifier identity = openIdAuthorizer.verifyResponse(req);
+        Identifier identity = openIdAuthenticator.verifyResponse(req);
         if (identity != null) {
 
             // fetch user

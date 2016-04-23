@@ -1,6 +1,6 @@
 package com.justbuyit.eventprocessor.user;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
 import com.justbuyit.entity.User;
@@ -19,8 +19,8 @@ public class UnassignUserEventProcessor extends EventProcessor<UnassignUserEvent
 
     private CompanyDAO companyDAO;
 
-    public UnassignUserEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO) {
-        super(connectionSigner);
+    public UnassignUserEventProcessor(OAuthService oAuthService, CompanyDAO companyDAO) {
+        super(oAuthService);
         this.companyDAO = companyDAO;
     }
 

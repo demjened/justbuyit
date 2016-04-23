@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
 import com.justbuyit.exception.UserAlreadyExistsException;
@@ -26,13 +26,13 @@ public class CreateSubscriptionEventProcessorTest {
     private final static String SAMPLE_FILE = "com/justbuyit/eventprocessor/subscription/createSubscription.xml";
 
     @Mock
-    ConnectionSigner mockConnectionSigner;
+    OAuthService mockOAuthService;
     
     @Mock
     CompanyDAO mockCompanyDAO;
     
     @InjectMocks
-    private CreateSubscriptionEventProcessor eventProcessor = new CreateSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
+    private CreateSubscriptionEventProcessor eventProcessor = new CreateSubscriptionEventProcessor(mockOAuthService, mockCompanyDAO);
 
     /**
      * Tests unmarshalling of the sample event file.

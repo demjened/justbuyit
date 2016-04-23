@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
 import com.justbuyit.model.event.subscription.CancelSubscriptionEvent;
@@ -24,13 +24,13 @@ public class CancelSubscriptionEventProcessorTest {
     private final static String SAMPLE_FILE = "com/justbuyit/eventprocessor/subscription/cancelSubscription.xml";
 
     @Mock
-    ConnectionSigner mockConnectionSigner;
+    OAuthService mockOAuthService;
 
     @Mock
     CompanyDAO mockCompanyDAO;
 
     @InjectMocks
-    private CancelSubscriptionEventProcessor eventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
+    private CancelSubscriptionEventProcessor eventProcessor = new CancelSubscriptionEventProcessor(mockOAuthService, mockCompanyDAO);
 
     /**
      * Tests unmarshalling of the sample event file.

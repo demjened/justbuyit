@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 
 /**
  * Main application configuration that initializes
@@ -28,8 +28,8 @@ public class AppConfig {
     private String consumerSecret;
 
     @Bean
-    public ConnectionSigner connectionSigner() {
-        return new ConnectionSigner(consumerKey, consumerSecret);
+    public OAuthService oAuthService() {
+        return new OAuthService(consumerKey, consumerSecret);
     }
 
 }

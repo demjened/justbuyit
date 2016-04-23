@@ -18,7 +18,7 @@ import com.justbuyit.exception.UserNotFoundException;
  * Controller for logging out of the application.
  */
 @Controller
-@RequestMapping("/logout")
+@RequestMapping(value = "/logout", method = RequestMethod.GET)
 public class LogoutController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(LogoutController.class);
@@ -36,7 +36,7 @@ public class LogoutController extends ExceptionHandlingController {
      * @return the next model-and-view
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping
     public String logout(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String openId = (String) req.getSession().getAttribute("current_user_openid");
 

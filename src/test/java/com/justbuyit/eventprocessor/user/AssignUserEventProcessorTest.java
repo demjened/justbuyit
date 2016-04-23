@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.justbuyit.auth.ConnectionSigner;
+import com.justbuyit.auth.OAuthService;
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
 import com.justbuyit.entity.User;
@@ -25,13 +25,13 @@ public class AssignUserEventProcessorTest {
     private final static String SAMPLE_FILE = "com/justbuyit/eventprocessor/user/assignUser.xml";
 
     @Mock
-    ConnectionSigner mockConnectionSigner;
+    OAuthService mockOAuthService;
 
     @Mock
     CompanyDAO mockCompanyDAO;
 
     @InjectMocks
-    private AssignUserEventProcessor eventProcessor = new AssignUserEventProcessor(mockConnectionSigner, mockCompanyDAO);
+    private AssignUserEventProcessor eventProcessor = new AssignUserEventProcessor(mockOAuthService, mockCompanyDAO);
 
     /**
      * Tests unmarshalling of the sample event file.

@@ -36,7 +36,7 @@ public class MainController extends ExceptionHandlingController {
      *            the response
      * @return the next model-and-view
      */
-    @RequestMapping("/")
+    @RequestMapping
     public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
         LOG.info("/");
 
