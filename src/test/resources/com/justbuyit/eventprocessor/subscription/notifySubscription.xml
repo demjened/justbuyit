@@ -5,14 +5,14 @@
     <baseurl>https://www.acme.com</baseurl>
     <partner>APPDIRECT</partner>
   </marketplace>
-        <payload>
+  <payload>
     <account>
       <accountidentifier>a3f72246-5377-4d92-8bdc-b1b6b450c55c</accountidentifier>
       <status>ACTIVE</status>
     </account>
-    <configuration/>
+    <configuration />
     <notice>
       <type>UPCOMING_INVOICE</type>
     </notice>
-    </payload>
+  </payload>
 </event>

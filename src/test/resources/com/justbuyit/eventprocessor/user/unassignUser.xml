@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
-        <type>USER_UNASSIGNMENT</type>
-        <marketplace>
-                <baseUrl>https://www.acme.com</baseUrl>
-                <partner>APPDIRECT</partner>
-        </marketplace>
-        <creator>
-                <email>738a5bd7-7472-3ebb-9754-14520f89eac7</email>
-                <firstName>Another</firstName>
-                <language>en</language>
-                <lastName>User</lastName>
-                <openId>https://www.acme.com/openid/id/a9501ec3-d028-4ad0-a939-607d10c24fe3</openId>
-                <uuid>a9501ec3-d028-4ad0-a939-607d10c24fe3</uuid>
-        </creator>
-        <payload>
-                <account>
-                        <accountIdentifier>199722</accountIdentifier>
-                        <status>ACTIVE</status>
-                </account>
-                <user>
-                        <address>
-                                <city>San Jose</city>
-                                <country>US</country>
-                                <firstName>Another</firstName>
-                                <fullName>Another User</fullName>
-                                <lastName>User</lastName>
-                                <state>CA</state>
-                                <street1>1 Main St</street1>
-                                <zip>95131</zip>
-                        </address>
-                        <email>738a5bd7-7472-3ebb-9754-14520f89eac7</email>
-                        <firstName>Another</firstName>
-                        <language>en</language>
-                        <lastName>User</lastName>
-                        <openId>https://test.appdirect.com/openid/id/a9501ec3-d028-4ad0-a939-607d10c24fe3</openId>
-                        <uuid>a9501ec3-d028-4ad0-a939-607d10c24fe3</uuid>
-                </user>
-        </payload>
+  <type>USER_UNASSIGNMENT</type>
+  <marketplace>
+    <baseUrl>https://www.acme.com</baseUrl>
+    <partner>APPDIRECT</partner>
+  </marketplace>
+  <creator>
+    <email>738a5bd7-7472-3ebb-9754-14520f89eac7</email>
+    <firstName>Another</firstName>
+    <language>en</language>
+    <lastName>User</lastName>
+    <openId>https://www.acme.com/openid/id/a9501ec3-d028-4ad0-a939-607d10c24fe3</openId>
+    <uuid>a9501ec3-d028-4ad0-a939-607d10c24fe3</uuid>
+  </creator>
+  <payload>
+    <account>
+      <accountIdentifier>199722</accountIdentifier>
+      <status>ACTIVE</status>
+    </account>
+    <user>
+      <address>
+        <city>San Jose</city>
+        <country>US</country>
+        <firstName>Another</firstName>
+        <fullName>Another User</fullName>
+        <lastName>User</lastName>
+        <state>CA</state>
+        <street1>1 Main St</street1>
+        <zip>95131</zip>
+      </address>
+      <email>738a5bd7-7472-3ebb-9754-14520f89eac7</email>
+      <firstName>Another</firstName>
+      <language>en</language>
+      <lastName>User</lastName>
+      <openId>https://test.appdirect.com/openid/id/a9501ec3-d028-4ad0-a939-607d10c24fe3</openId>
+      <uuid>a9501ec3-d028-4ad0-a939-607d10c24fe3</uuid>
+    </user>
+  </payload>
 </event>
