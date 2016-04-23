@@ -1,4 +1,4 @@
-<#assign subtitle = "Forbidden">
+<#assign subtitle = "Logout successful">
 
 <!DOCTYPE html>
 <html>
@@ -6,8 +6,8 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h2 style="color: #ce4844">${subtitle?upper_case}</h2>
-      <p>${message}</p>
+      <h2>${subtitle?upper_case}</h2>
+      <p>You have successfully logged out of JustBuyIt!</p>
       <p>
         <a class="btn btn-lg btn-success" href="https://www.appdirect.com" role="button">Go to AppDirect</a>
       </p>
