@@ -28,7 +28,7 @@ public class MainController extends ExceptionHandlingController {
     private UserDAO userDAO;
 
     /**
-     * Loads the main application screen. If the user is not authenticated, points them to the AppDirect launch page.
+     * Loads the main application screen. If the user is not authenticated, points them to the AppDirect login page.
      * 
      * @param req
      *            the request
@@ -47,6 +47,7 @@ public class MainController extends ExceptionHandlingController {
             // fetch user by OpenID and proceed
             User user = userDAO.findByOpenId(openId);
             if (user != null && user.isAuthenticated()) {
+                req.getSession().setAttribute("current_user_openid", openId);
                 ModelAndView modelAndView = new ModelAndView();
                 modelAndView.addObject("name", user.getFirstName());
                 modelAndView.setViewName("main");
@@ -54,12 +55,8 @@ public class MainController extends ExceptionHandlingController {
             }
         }
 
-        // navigate to forbidden page
-        resp.setStatus(403);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
-        modelAndView.setViewName("forbidden");
-        return modelAndView;
+        // navigate to the login page
+        return new ModelAndView("pleaselogin");
     }
 
 }
