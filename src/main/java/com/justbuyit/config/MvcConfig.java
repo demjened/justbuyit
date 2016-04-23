@@ -1,28 +1,42 @@
 package com.justbuyit.config;
 
+import java.util.Properties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.justbuyit.controller" })
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-    @Bean 
-    public FreeMarkerConfigurer freemarkerConfig() { 
-        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer(); 
+    @Bean(name = "viewResolver")
+    public ViewResolver viewResolver() {
+        FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
+        resolver.setCache(false);
+        resolver.setSuffix(".ftl");
+        return resolver;
+    }
+
+    @Bean(name = "freemarkerConfig")
+    public FreeMarkerConfig freeMarkerConfig() {
+        Properties props = new Properties();
+        props.setProperty("number_format", "0.##");
+        props.setProperty("locale", "en-GB");
+
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setFreemarkerSettings(props);
         configurer.setTemplateLoaderPath("/WEB-INF/ftl/");
-        return configurer; 
+
+        return configurer;
+
     }
-    
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.freeMarker();
-    }
-    
+
 }
