@@ -22,7 +22,7 @@ A running instance of JustBuyIt! is available on Heroku: https://justbuyit-appdi
 
 Build the WAR package using Maven:
 ```
-mvn package
+mvn clean package
 ```
 
 Then deploy to a container. Launch the container with the following environment variables:
