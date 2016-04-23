@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.BeanUtils;
 
 import com.google.inject.internal.Sets;
@@ -28,7 +30,8 @@ public class Company {
     private String subscriptionEditionCode;
     private String subscriptionStatus;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<User> users = Sets.newHashSet();
 
     public Company() {
