@@ -20,7 +20,7 @@ import org.openid4java.message.ax.FetchResponse;
 import org.springframework.stereotype.Component;
 
 /**
- * OpenID-based authorizer.
+ * OpenID-based authenticator.
  */
 @Component
 @SuppressWarnings("rawtypes")

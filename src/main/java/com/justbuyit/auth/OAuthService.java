@@ -24,7 +24,7 @@ import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 
 /**
- * OAuth-based authentication service.
+ * OAuth-based authorization service.
  */
 public class OAuthService {
 
