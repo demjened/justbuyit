@@ -28,11 +28,11 @@ public class ConnectionSigner {
     }
 
     /**
-     * Opens and signs a HTTP connection to the given URL.
+     * Opens a HTTP connection to the given URL, signs it with the app's OAuth credentials, then connects to it.
      * 
      * @param url
      *            the URL
-     * @return the connection
+     * @return the signed connection
      * @throws IOException
      * @throws OAuthException
      */
