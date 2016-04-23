@@ -12,8 +12,9 @@
       <p>Thank you for subscribing to JustBuyIt! We're happy you're here.</p>
       <p>However, this application does absolutely nothing. Its sole purpose is to demonstrate its integration capabilities with AppDirect.</p>
       <p>
-        <a class="btn btn-lg btn-success" href="https://www.appdirect.com" role="button">Go to AppDirect</a>
-        <a class="btn btn-lg btn-primary" href="<@spring.url '/logout'/>" role="button">Log out</a>
+        <a class="btn btn-lg btn-primary" href="https://www.appdirect.com" role="button">Go to AppDirect</a>
+        <a class="btn btn-lg btn-info" href="<@spring.url '/status'/>" role="button">Registration status</a>
+        <a class="btn btn-lg btn-success" href="<@spring.url '/logout'/>" role="button">Log out</a>
       </p>
     </div>
   </div>

@@ -12,6 +12,7 @@
       <p>You are not logged in. Please log in via AppDirect.</span></p>
       <p>
         <a class="btn btn-lg btn-success" href="<@spring.url '/login?openid_url=https://www.appdirect.com/openid/id'/>" role="button">Log in</a>
+        <a class="btn btn-lg btn-info" href="<@spring.url '/status'/>" role="button">Registration status</a>
       </p>
     </div>
   </div>
