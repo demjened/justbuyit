@@ -40,8 +40,8 @@ public class LoginController {
             // fetch user by openId and check if they are authenticated
             User user = userDAO.findByOpenId(openId);
             if (user != null && user.isAuthenticated()) {
-                LOG.debug("User with openId [{}] is already authenticated, forwarding to /main", openId);
-                return new ModelAndView("forward:/main");
+                LOG.debug("User with openId [{}] is already authenticated, forwarding to /", openId);
+                return new ModelAndView("forward:/");
             } else {
                 LOG.debug("User with openId [{}] has not been authenticated yet, redirecting to /openid", openId);
                 openIdAuthorizer.authRequest(openId, req.getRequestURL().append("/openid").toString(), req, resp);
@@ -61,11 +61,12 @@ public class LoginController {
     public ModelAndView openid(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         LOG.info("/login/openid");
 
+        String openId;
         Identifier identity = openIdAuthorizer.verifyResponse(req);
         if (identity != null) {
             
             // fetch user
-            String openId = identity.getIdentifier();
+            openId = identity.getIdentifier();
             User user = userDAO.findByOpenId(openId);
             if (user == null) {
                 ModelAndView modelAndView = new ModelAndView();
@@ -76,10 +77,17 @@ public class LoginController {
             
             // set and persist authenticated flag
             user.setAuthenticated(true);
+            req.getSession().setAttribute("current_user_openid", openId);
             userDAO.update(user);
+        } else {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("message", "You have not been assigned to this application.");
+            modelAndView.setViewName("forbidden");
+            return modelAndView;
         }
         
-        return new ModelAndView("forward:/main");
+        LOG.debug("User with openId [{}] has been authenticated, forwarding to /", openId);
+        return new ModelAndView("forward:/");
     }
     
 }

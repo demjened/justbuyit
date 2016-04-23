@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.justbuyit.dao.UserDAO;
+import com.justbuyit.entity.User;
 
 @Controller
 @RequestMapping("/logout")
@@ -23,12 +24,15 @@ public class LogoutController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String logout(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String openId = req.getParameter("openid_url");
+        String openId = (String) req.getSession().getAttribute("current_user_openid");
         
         LOG.info("/logout :: {}", openId);
         
-        //userDAO.setAuthenticated(openId, false);
-        return "/main";
+        User user = userDAO.findByOpenId(openId);
+        user.setAuthenticated(false);
+        userDAO.update(user);
+        
+        return "loggedout";
     }
     
 }
