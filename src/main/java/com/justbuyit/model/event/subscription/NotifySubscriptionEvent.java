@@ -49,5 +49,14 @@ public class NotifySubscriptionEvent extends Event<NotifySubscriptionPayload> {
     public NotifySubscriptionPayload getPayload() {
         return super.getPayload();
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getAccount().getAccountIdentifier()).append(" -> ")
+                .append(getPayload().getNotice().getType());
+        return builder.toString();
+    }
+
 
 }

@@ -28,6 +28,9 @@ public class EventProcessorFactoryTest {
     @InjectMocks
     EventProcessorFactory eventProcessorFactory = new EventProcessorFactory();
     
+    /**
+     * Tests creation of specific event processor objects as per their event type.
+     */
     @Test
     public void testCreateEventProcessor() {
         eventProcessorFactory.setApplicationContext(applicationContext);
@@ -40,6 +43,9 @@ public class EventProcessorFactoryTest {
         Assert.assertEquals(UnassignUserEventProcessor.class, eventProcessorFactory.createEventProcessor(EventType.USER_UNASSIGNMENT).getClass());
     }
 
+    /**
+     * Tests that creation fails if the event type is not supplied.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEventProcessorWithNullType() {
         eventProcessorFactory.createEventProcessor(null);

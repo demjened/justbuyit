@@ -33,21 +33,29 @@ public class UnassignUserEvent extends Event<UnassignUserPayload> {
         public void setUser(User user) {
             this.user = user;
         }
-        
+
     }
-    
+
     public UnassignUserEvent() {
         super(EventType.USER_UNASSIGNMENT);
     }
-    
+
     @Override
     public void setPayload(UnassignUserPayload payload) {
         super.setPayload(payload);
     }
-    
+
     @Override
     public UnassignUserPayload getPayload() {
         return super.getPayload();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getAccount().getAccountIdentifier()).append(" -> ")
+                .append(getPayload().getUser().getUuid());
+        return builder.toString();
     }
 
 }

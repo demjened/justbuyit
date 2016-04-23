@@ -1,12 +1,27 @@
 package com.justbuyit.dao;
 
 import com.justbuyit.entity.User;
-import com.justbuyit.exception.JustBuyItException;
 
+/**
+ * DAO for managing {@link User} entities.
+ */
 public interface UserDAO {
 
+    /**
+     * Finds a user by the given OpenID.
+     * 
+     * @param openId
+     *            the OpenID identifier
+     * @return the user if found, null otherwise
+     */
     public abstract User findByOpenId(String openId);
-    
-    public abstract User update(User user) throws JustBuyItException;
-    
+
+    /**
+     * Updates the given user.
+     * 
+     * @param user
+     *            the user
+     */
+    public abstract User update(User user);
+
 }

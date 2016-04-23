@@ -3,7 +3,6 @@ package com.justbuyit.dao;
 import java.util.List;
 
 import com.justbuyit.entity.Company;
-import com.justbuyit.exception.JustBuyItException;
 
 /**
  * DAO for managing {@link Company} entities (aka. customers).
@@ -11,38 +10,33 @@ import com.justbuyit.exception.JustBuyItException;
 public interface CompanyDAO {
 
     /**
-     * Adds a new company (aka. customer).
+     * Creates a new company (aka. customer).
      * 
      * @param company
      *            the company
-     * @return the ID of the company
-     * @throws JustBuyItException
-     *             if there was an error during the action
+     * @return the persisted company
      */
-    public abstract String create(Company company) throws JustBuyItException;
+    public abstract Company create(Company company);
 
     /**
      * Updates the given company.
      * 
      * @param company
      *            the company
-     * @throws JustBuyItException
-     *             if there was an error during the action
      */
-    public abstract Company update(Company company) throws JustBuyItException;
+    public abstract Company update(Company company);
 
     /**
      * Deletes the given company.
      * 
      * @param companyId
      *            the company ID
-     * @throws JustBuyItException
-     *             if there was an error during the action
      */
-    public abstract void delete(Company company) throws JustBuyItException;
+    public abstract void delete(Company company);
 
     /**
      * Finds a company with the given ID.
+     * 
      * @param companyId
      *            the company ID
      * @return the company

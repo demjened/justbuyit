@@ -12,6 +12,9 @@ import org.springframework.beans.BeanUtils;
 
 import com.google.inject.internal.Sets;
 
+/**
+ * A company (aka. customer) entity with associated subscription status and users.
+ */
 @Entity
 public class Company {
 
@@ -31,6 +34,12 @@ public class Company {
     public Company() {
     }
 
+    /**
+     * Creates a new company from the given Company value object.
+     * 
+     * @param company
+     *            the value object
+     */
     public Company(com.justbuyit.model.Company company) {
         BeanUtils.copyProperties(company, this);
     }

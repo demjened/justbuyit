@@ -13,8 +13,11 @@ import com.justbuyit.eventprocessor.EventProcessorFactory;
 import com.justbuyit.model.event.EventType;
 import com.justbuyit.model.result.Result;
 
+/**
+ * Controller for AppDirect-initiated user assignment events.
+ */
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/xml")
 public class UserAssignmentController {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserAssignmentController.class);
@@ -22,20 +25,38 @@ public class UserAssignmentController {
     @Autowired
     private EventProcessorFactory eventProcessorFactory;
 
-    @RequestMapping(value="/assignment", method = RequestMethod.GET, produces = "application/xml")
+    /**
+     * Assigns a user as per pre-stashed event details, which is located at the given URL.
+     * 
+     * @param urlStr
+     *            the event URL
+     * @return the result object
+     * @throws Exception
+     */
+    @RequestMapping("/assignment")
     public Result assignment(@RequestParam("url") String urlStr) throws Exception {
         LOG.info("/user/assignment :: {}", urlStr);
-        
+
+        // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.USER_ASSIGNMENT);
         return processor.process(urlStr);
     }
-    
-    @RequestMapping(value="/unassignment", method = RequestMethod.GET, produces = "application/xml")
+
+    /**
+     * Assigns a user as per pre-stashed event details, which is located at the given URL.
+     * 
+     * @param urlStr
+     *            the event URL
+     * @return the result object
+     * @throws Exception
+     */
+    @RequestMapping("/unassignment")
     public Result unassignment(@RequestParam("url") String urlStr) throws Exception {
         LOG.info("/user/unassignment :: {}", urlStr);
-        
+
+        // delegate processing to event type specific processor
         EventProcessor<?> processor = eventProcessorFactory.createEventProcessor(EventType.USER_UNASSIGNMENT);
         return processor.process(urlStr);
     }
-    
+
 }

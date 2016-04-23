@@ -49,5 +49,12 @@ public class AssignUserEvent extends Event<AssignUserPayload> {
     public AssignUserPayload getPayload() {
         return super.getPayload();
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getAccount().getAccountIdentifier()).append(" -> ").append(getPayload().getUser().getUuid());
+        return builder.toString();
+    }
 
 }

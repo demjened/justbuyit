@@ -19,6 +19,9 @@ import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
 import org.springframework.stereotype.Component;
 
+/**
+ * OpenID-based authorizer.
+ */
 @Component
 @SuppressWarnings("rawtypes")
 public class OpenIdAuthorizer {

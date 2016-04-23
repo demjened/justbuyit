@@ -1,5 +1,8 @@
 package com.justbuyit.exception;
 
+/**
+ * Exception for a case when a user is not found.
+ */
 public class UserNotFoundException extends JustBuyItException {
 
     private static final long serialVersionUID = 2903949705182499181L;

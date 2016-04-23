@@ -23,6 +23,9 @@ import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.model.event.subscription.CancelSubscriptionEvent;
 import com.justbuyit.model.result.Result;
 
+/**
+ * Unit tests for {@link EventProcessor}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class EventProcessorTest {
 

@@ -12,6 +12,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+/**
+ * Spring MVC and Freemarker template engine configuration. 
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.justbuyit.controller" })
@@ -36,7 +39,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         configurer.setTemplateLoaderPath("/WEB-INF/ftl/");
 
         return configurer;
-
     }
 
 }

@@ -17,6 +17,12 @@ import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.model.event.Event;
 import com.justbuyit.model.result.Result;
 
+/**
+ * Base event processor that processes an event of a specific type.
+ * 
+ * @param <E>
+ *            the event type
+ */
 public abstract class EventProcessor<E extends Event<?>> {
 
     private final static Logger LOG = LoggerFactory.getLogger(EventProcessor.class);
@@ -46,8 +52,8 @@ public abstract class EventProcessor<E extends Event<?>> {
         try {
             InputStream is = conn.getInputStream();
             E event = unmarshalEvent(is);
-            LOG.debug("Unmarshalled stream to event: [{}]", event);
 
+            LOG.debug("Processing event: [{}]", event);
             return processEvent(event);
         } catch (JustBuyItException e) { // domain exception
             LOG.error("Error while processing event", e);

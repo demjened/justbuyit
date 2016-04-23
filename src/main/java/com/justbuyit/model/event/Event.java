@@ -5,13 +5,20 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.justbuyit.model.Marketplace;
 import com.justbuyit.model.User;
 
+/**
+ * Base AppDirect event that contains some common event info and a specific payload.
+ * 
+ * @param
+ *            <P>
+ *            the type of the payload
+ */
 public abstract class Event<P extends Payload> {
 
     private final EventType type;
     private Marketplace marketplace;
     private String flag;
     private User creator;
-    
+
     @XmlTransient
     private P payload;
 
@@ -46,7 +53,7 @@ public abstract class Event<P extends Payload> {
     public void setCreator(User creator) {
         this.creator = creator;
     }
-    
+
     @XmlTransient
     public P getPayload() {
         return payload;

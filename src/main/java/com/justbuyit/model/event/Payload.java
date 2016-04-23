@@ -1,6 +1,9 @@
 package com.justbuyit.model.event;
 
-public class Payload {
+/**
+ * Event payload.
+ */
+public abstract class Payload {
     
     public Payload() {
     }

@@ -49,5 +49,13 @@ public class ChangeSubscriptionEvent extends Event<ChangeSubscriptionPayload> {
     public ChangeSubscriptionPayload getPayload() {
         return super.getPayload();
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getAccount().getAccountIdentifier()).append(" -> ")
+                .append(getPayload().getOrder().getEditionCode());
+        return builder.toString();
+    }
 
 }

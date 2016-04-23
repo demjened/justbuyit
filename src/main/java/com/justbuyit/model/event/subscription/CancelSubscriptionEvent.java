@@ -39,5 +39,12 @@ public class CancelSubscriptionEvent extends Event<CancelSubscriptionPayload> {
     public CancelSubscriptionPayload getPayload() {
         return super.getPayload();
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getAccount().getAccountIdentifier());
+        return builder.toString();
+    }
 
 }

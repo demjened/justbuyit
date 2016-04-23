@@ -16,6 +16,9 @@ import com.justbuyit.model.event.user.UnassignUserEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
 
+/**
+ * Unit tests for {@link UnassignUserEventProcessor}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class UnassignUserEventProcessorTest {
 
@@ -30,11 +33,21 @@ public class UnassignUserEventProcessorTest {
     @InjectMocks
     private UnassignUserEventProcessor eventProcessor = new UnassignUserEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
+    /**
+     * Tests unmarshalling of the sample event file.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testUnmarshal() throws Exception {
         Assert.assertEquals(UnassignUserEvent.class, eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE)).getClass());
     }
     
+    /**
+     * Tests user unassignment processing.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testProcessEvent() throws Exception {
         UnassignUserEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
@@ -45,6 +58,8 @@ public class UnassignUserEventProcessorTest {
         
         User user = new User();
         user.setUuid(event.getPayload().getUser().getUuid());
+        user.setCompany(company);
+        company.getUsers().add(user);
         
         Result result = eventProcessor.processEvent(event);
         

@@ -23,6 +23,9 @@ import com.justbuyit.dao.UserDAO;
 import com.justbuyit.dao.hibernate.SimpleCompanyDAO;
 import com.justbuyit.dao.hibernate.SimpleUserDAO;
 
+/**
+ * Hibernate powered data access configuration. 
+ */
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = { "classpath:config/env/env.${APP_CONFIG_MODE:dev}.properties" })

@@ -8,26 +8,28 @@ import org.springframework.stereotype.Repository;
 
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.entity.Company;
-import com.justbuyit.exception.JustBuyItException;
 
+/**
+ * Hibernate powered {@link CompanyDAO}.
+ */
 @Repository
 @Transactional
 @SuppressWarnings("unchecked")
 public class SimpleCompanyDAO extends BaseDAO implements CompanyDAO {
 
     @Override
-    public String create(Company company) throws JustBuyItException {
+    public Company create(Company company) {
         getSession().save(company);
-        return company.getUuid();
+        return company;
     }
 
     @Override
-    public Company update(Company company) throws JustBuyItException {
+    public Company update(Company company) {
         return (Company) getSession().merge(company);
     }
-    
+
     @Override
-    public void delete(Company company) throws JustBuyItException {
+    public void delete(Company company) {
         getSession().delete(company);
     }
 

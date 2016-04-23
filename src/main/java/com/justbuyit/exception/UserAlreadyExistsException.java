@@ -1,5 +1,8 @@
 package com.justbuyit.exception;
 
+/**
+ * Exception for a case when an account already exists.
+ */
 public class UserAlreadyExistsException extends JustBuyItException {
 
     private static final long serialVersionUID = -4512533923245959097L;

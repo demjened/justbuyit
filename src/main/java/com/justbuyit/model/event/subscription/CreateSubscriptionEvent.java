@@ -33,21 +33,28 @@ public class CreateSubscriptionEvent extends Event<CreateSubscriptionPayload> {
         public void setOrder(Order order) {
             this.order = order;
         }
-        
+
     }
-    
+
     public CreateSubscriptionEvent() {
         super(EventType.SUBSCRIPTION_ORDER);
     }
-    
+
     @Override
     public void setPayload(CreateSubscriptionPayload payload) {
         super.setPayload(payload);
     }
-    
+
     @Override
     public CreateSubscriptionPayload getPayload() {
         return super.getPayload();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName()).append(": ").append(getPayload().getCompany().getUuid()).append(" / ").append(getCreator().getUuid());
+        return builder.toString();
     }
 
 }

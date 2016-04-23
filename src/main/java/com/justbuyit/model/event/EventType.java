@@ -1,5 +1,8 @@
 package com.justbuyit.model.event;
 
+/**
+ * AppDirect event type.
+ */
 public enum EventType {
 
     SUBSCRIPTION_ORDER,

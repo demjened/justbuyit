@@ -17,6 +17,9 @@ import com.justbuyit.model.event.subscription.CreateSubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
 
+/**
+ * Unit tests for {@link CreateSubscriptionEventProcessor}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class CreateSubscriptionEventProcessorTest {
     
@@ -31,17 +34,28 @@ public class CreateSubscriptionEventProcessorTest {
     @InjectMocks
     private CreateSubscriptionEventProcessor eventProcessor = new CreateSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
+    /**
+     * Tests unmarshalling of the sample event file.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testUnmarshal() throws Exception {
         Assert.assertEquals(CreateSubscriptionEvent.class, eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE)).getClass());
     }
     
+    /**
+     * Tests subscription creation processing.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testProcessEvent() throws Exception {
         CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
 
-        Mockito.when(mockCompanyDAO.create(Matchers.anyObject())).thenReturn("123");
-        Mockito.when(mockCompanyDAO.findById("123")).thenReturn(new Company(event.getPayload().getCompany()));
+        Company company = new Company(event.getPayload().getCompany());
+        Mockito.when(mockCompanyDAO.create(Matchers.anyObject())).thenReturn(company);
+        Mockito.when(mockCompanyDAO.findById("123")).thenReturn(company);
         
         Result result = eventProcessor.processEvent(event);
         
@@ -55,17 +69,8 @@ public class CreateSubscriptionEventProcessorTest {
     public void testProcessEventWhenCompanyExists() throws Exception {
         CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
         
-        Mockito.doThrow(new UserAlreadyExistsException("Exists")).when(mockCompanyDAO).create(Matchers.any());
-        
-        // verify that we get an exception
-        eventProcessor.processEvent(event);
-    }
-    
-    @Test(expected = UserAlreadyExistsException.class)
-    public void testProcessEventWhenSubscriptionExists() throws Exception {
-        CreateSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
-        
-        Mockito.doThrow(new UserAlreadyExistsException("Exists")).when(mockCompanyDAO).create(Matchers.any());
+        Company company = new Company(event.getPayload().getCompany());
+        Mockito.when(mockCompanyDAO.findById(Matchers.anyString())).thenReturn(company);
         
         // verify that we get an exception
         eventProcessor.processEvent(event);

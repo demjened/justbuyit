@@ -7,6 +7,9 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.beans.BeanUtils;
 
+/**
+ * A user entity who belongs to a company.
+ */
 @Entity
 public class User {
 
@@ -22,6 +25,12 @@ public class User {
     public User() {
     }
     
+    /**
+     * Creates a new user from the given User value object.
+     * 
+     * @param user
+     *            the value object
+     */
     public User(com.justbuyit.model.User user) {
         BeanUtils.copyProperties(user, this);
     }

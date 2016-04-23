@@ -15,6 +15,9 @@ import com.justbuyit.model.event.subscription.NotifySubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
 
+/**
+ * Unit tests for {@link NotifySubscriptionEventProcessor}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class NotifySubscriptionEventProcessorTest {
 
@@ -29,11 +32,21 @@ public class NotifySubscriptionEventProcessorTest {
     @InjectMocks
     private NotifySubscriptionEventProcessor eventProcessor = new NotifySubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
+    /**
+     * Tests unmarshalling of the sample event file.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testUnmarshal() throws Exception {
         Assert.assertEquals(NotifySubscriptionEvent.class, eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE)).getClass());
     }
     
+    /**
+     * Tests subscription status notification processing.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testProcessEventClosed() throws Exception {
         NotifySubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));

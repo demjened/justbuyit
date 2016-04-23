@@ -8,20 +8,28 @@ import org.springframework.context.annotation.Import;
 
 import com.justbuyit.auth.ConnectionSigner;
 
+/**
+ * Main application configuration that initializes
+ * <ul>
+ * <li>Authentication</li>
+ * <li>Event processors</li>
+ * <li>Data sources</li>
+ * </ul>
+ */
 @Configuration
 @ComponentScan(basePackages = { "com.justbuyit.auth", "com.justbuyit.eventprocessor" })
 @Import(DataSourceConfig.class)
 public class AppConfig {
-    
+
     @Value("#{environment['OAUTH_CONSUMER_KEY']}")
     private String consumerKey;
 
     @Value("#{environment['OAUTH_CONSUMER_SECRET']}")
     private String consumerSecret;
-    
+
     @Bean
     public ConnectionSigner connectionSigner() {
         return new ConnectionSigner(consumerKey, consumerSecret);
     }
-    
+
 }

@@ -16,14 +16,24 @@ import com.justbuyit.eventprocessor.user.AssignUserEventProcessor;
 import com.justbuyit.eventprocessor.user.UnassignUserEventProcessor;
 import com.justbuyit.model.event.EventType;
 
+/**
+ * Factory of {@link EventProcessor} objects.
+ */
 @Component
 public class EventProcessorFactory implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-    
+
+    /**
+     * Instantiates the specific {@link EventProcessor} object related to the given event type.
+     * 
+     * @param type
+     *            the event type
+     * @return the event processor
+     */
     public EventProcessor<?> createEventProcessor(EventType type) {
         Assert.notNull(type);
-        
+
         switch (type) {
         case SUBSCRIPTION_ORDER:
             return new CreateSubscriptionEventProcessor(

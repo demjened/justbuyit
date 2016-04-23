@@ -15,6 +15,9 @@ import com.justbuyit.model.event.subscription.ChangeSubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
 
+/**
+ * Unit tests for {@link ChangeSubscriptionEventProcessor}.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ChangeSubscriptionEventProcessorTest {
 
@@ -29,11 +32,21 @@ public class ChangeSubscriptionEventProcessorTest {
     @InjectMocks
     private ChangeSubscriptionEventProcessor eventProcessor = new ChangeSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
+    /**
+     * Tests unmarshalling of the sample event file.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testUnmarshal() throws Exception {
         Assert.assertEquals(ChangeSubscriptionEvent.class, eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE)).getClass());
     }
     
+    /**
+     * Tests subscription change processing.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testProcessEvent() throws Exception {
         ChangeSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
