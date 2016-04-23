@@ -23,7 +23,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Bean(name = "viewResolver")
     public ViewResolver viewResolver() {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
-        resolver.setCache(false);
+        resolver.setCache(true);
         resolver.setSuffix(".ftl");
         return resolver;
     }
@@ -37,7 +37,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setFreemarkerSettings(props);
         configurer.setTemplateLoaderPath("/WEB-INF/ftl/");
-
         return configurer;
     }
 
