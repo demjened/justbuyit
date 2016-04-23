@@ -27,7 +27,7 @@ public class LogoutController {
         
         LOG.info("/logout :: {}", openId);
         
-        userDAO.setAuthenticated(openId, false);
+        //userDAO.setAuthenticated(openId, false);
         return "/main";
     }
     

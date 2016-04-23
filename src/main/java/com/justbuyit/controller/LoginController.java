@@ -8,13 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.justbuyit.auth.OpenIdAuthorizer;
 import com.justbuyit.dao.UserDAO;
-import com.justbuyit.model.User;
+import com.justbuyit.entity.User;
 
 @Controller
 @RequestMapping
@@ -29,19 +30,31 @@ public class LoginController {
     private UserDAO userDAO;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String openId = req.getParameter("openid_url");
         
         LOG.info("/login :: {}", openId);
         
-        if (userDAO.isAuthenticated(openId)) {
-            LOG.debug("User with openId [{}] is already authenticated, forwarding to /main");
-            return "forward:/main";
-        } else {
-            LOG.debug("User with openId [{}] has not been authenticated yet, redirecting to /openid");
-            openIdAuthorizer.authRequest(openId, req.getRequestURL().append("/openid").toString(), req, resp);
-            return null;
+        if (!StringUtils.isEmpty(openId)) {
+
+            // fetch user by openId and check if they are authenticated
+            User user = userDAO.findByOpenId(openId);
+            if (user != null && user.isAuthenticated()) {
+                LOG.debug("User with openId [{}] is already authenticated, forwarding to /main", openId);
+                return new ModelAndView("forward:/main");
+            } else {
+                LOG.debug("User with openId [{}] has not been authenticated yet, redirecting to /openid", openId);
+                openIdAuthorizer.authRequest(openId, req.getRequestURL().append("/openid").toString(), req, resp);
+                return null;
+            }
         }
+        
+        // forward to forbidden page
+        resp.setStatus(403);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
+        modelAndView.setViewName("forbidden");
+        return modelAndView;
     }
     
     @RequestMapping(value = "/login/openid", method = RequestMethod.GET)
@@ -61,8 +74,9 @@ public class LoginController {
                 return modelAndView;
             }
             
-            // set authenticated flag
+            // set and persist authenticated flag
             user.setAuthenticated(true);
+            userDAO.update(user);
         }
         
         return new ModelAndView("forward:/main");

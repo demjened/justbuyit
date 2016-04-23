@@ -5,8 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
-import com.justbuyit.dao.SubscriptionDAO;
-import com.justbuyit.dao.UserDAO;
+import com.justbuyit.entity.Company;
 import com.justbuyit.eventprocessor.EventProcessor;
 import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.model.event.subscription.NotifySubscriptionEvent;
@@ -18,14 +17,10 @@ public class NotifySubscriptionEventProcessor extends EventProcessor<NotifySubsc
     private final static Logger LOG = LoggerFactory.getLogger(NotifySubscriptionEventProcessor.class);
     
     private CompanyDAO companyDAO;
-    private SubscriptionDAO subscriptionDAO;
-    private UserDAO userDAO;
 
-    public NotifySubscriptionEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO, SubscriptionDAO subscriptionDAO, UserDAO userDAO) {
+    public NotifySubscriptionEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO) {
         super(connectionSigner);
         this.companyDAO = companyDAO;
-        this.subscriptionDAO = subscriptionDAO;
-        this.userDAO = userDAO;
     }
 
     @Override
@@ -35,18 +30,16 @@ public class NotifySubscriptionEventProcessor extends EventProcessor<NotifySubsc
         String companyId = event.getPayload().getAccount().getAccountIdentifier();
         String noticeType = event.getPayload().getNotice().getType();
         if (noticeType.equals("CLOSED")) {
-            // cancel subscription
-            subscriptionDAO.delete(companyId);
 
-            // delete company
-            companyDAO.delete(companyId);
-
-            // remove all users
-            userDAO.deleteAll(companyId);
+            // delete company/subscription
+            Company company = companyDAO.findById(companyId);
+            companyDAO.delete(company);
         } else if (!noticeType.equals("UPCOMING_INVOICE")) {
+            
             // update subscription status
-            String subscriptionStatus = event.getPayload().getAccount().getStatus();
-            companyDAO.updateSubscriptionStatus(companyId, subscriptionStatus);
+            Company company = companyDAO.findById(companyId);
+            company.setSubscriptionStatus(event.getPayload().getAccount().getStatus());
+            companyDAO.update(company);
         }
 
         return Result.successResult(String.format("Changed subscription for company [%s]", companyId));

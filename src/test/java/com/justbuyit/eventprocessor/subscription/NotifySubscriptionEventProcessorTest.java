@@ -4,15 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
-import com.justbuyit.dao.SubscriptionDAO;
-import com.justbuyit.dao.UserDAO;
+import com.justbuyit.entity.Company;
 import com.justbuyit.model.event.subscription.NotifySubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
@@ -28,14 +26,8 @@ public class NotifySubscriptionEventProcessorTest {
     @Mock
     CompanyDAO mockCompanyDAO;
     
-    @Mock
-    SubscriptionDAO mockSubscriptionDAO;
-
-    @Mock
-    UserDAO mockUserDAO;
-    
     @InjectMocks
-    private NotifySubscriptionEventProcessor eventProcessor = new NotifySubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO, mockSubscriptionDAO, mockUserDAO);
+    private NotifySubscriptionEventProcessor eventProcessor = new NotifySubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
     @Test
     public void testUnmarshal() throws Exception {
@@ -46,12 +38,15 @@ public class NotifySubscriptionEventProcessorTest {
     public void testProcessEventClosed() throws Exception {
         NotifySubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
         event.getPayload().getNotice().setType("CLOSED");
+        
+        Company company = new Company();
+        company.setUuid(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.when(mockCompanyDAO.findById(event.getPayload().getAccount().getAccountIdentifier())).thenReturn(company);
+        
         Result result = eventProcessor.processEvent(event);
         
-        // verify that the entities get deleted
-        Mockito.verify(mockSubscriptionDAO).delete(event.getPayload().getAccount().getAccountIdentifier());
-        Mockito.verify(mockCompanyDAO).delete(event.getPayload().getAccount().getAccountIdentifier());
-        Mockito.verify(mockUserDAO).deleteAll(event.getPayload().getAccount().getAccountIdentifier());
+        // verify that the subscription/company gets deleted 
+        Mockito.verify(mockCompanyDAO).delete(company);
         
         Assert.assertTrue(result.isSuccess());
     }
@@ -60,10 +55,16 @@ public class NotifySubscriptionEventProcessorTest {
     public void testProcessEventDeactivated() throws Exception {
         NotifySubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
         event.getPayload().getNotice().setType("REACTIVATED");
-        Result result = eventProcessor.processEvent(event);
         
-        // verify that the status gets updated
-        Mockito.verify(mockCompanyDAO).updateSubscriptionStatus(event.getPayload().getAccount().getAccountIdentifier(), event.getPayload().getAccount().getStatus());
+        Company company = new Company();
+        company.setUuid(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.when(mockCompanyDAO.findById(event.getPayload().getAccount().getAccountIdentifier())).thenReturn(company);
+        
+        Result result = eventProcessor.processEvent(event);
+
+        // verify that the subscription status gets updated 
+        Assert.assertEquals(event.getPayload().getAccount().getStatus(), company.getSubscriptionStatus());
+        Mockito.verify(mockCompanyDAO).update(company);
         
         Assert.assertTrue(result.isSuccess());
     }
@@ -75,7 +76,7 @@ public class NotifySubscriptionEventProcessorTest {
         Result result = eventProcessor.processEvent(event);
         
         // verify that the status does not get updated
-        Mockito.verify(mockCompanyDAO, Mockito.never()).updateSubscriptionStatus(Matchers.eq(event.getPayload().getAccount().getAccountIdentifier()), Matchers.anyString());
+        //Mockito.verify(mockCompanyDAO, Mockito.never()).updateSubscriptionStatus(Matchers.eq(event.getPayload().getAccount().getAccountIdentifier()), Matchers.anyString());
         
         Assert.assertTrue(result.isSuccess());
     }

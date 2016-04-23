@@ -10,6 +10,11 @@
   <logger name="com.justbuyit" level="${com.justbuyit.logger.level}" additivity="false">
     <appender-ref ref="STDOUT" />
   </logger>
+  
+  <logger name="org.hibernate.sql" level="debug" additivity="false">
+    <appender-ref ref="STDOUT" />
+  </logger>
+  
 
   <root level="warn">
     <appender-ref ref="STDOUT" />

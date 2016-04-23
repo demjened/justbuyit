@@ -2,8 +2,8 @@ package com.justbuyit.dao;
 
 import java.util.List;
 
+import com.justbuyit.entity.Company;
 import com.justbuyit.exception.JustBuyItException;
-import com.justbuyit.model.Company;
 
 /**
  * DAO for managing {@link Company} entities (aka. customers).
@@ -19,7 +19,17 @@ public interface CompanyDAO {
      * @throws JustBuyItException
      *             if there was an error during the action
      */
-    public abstract String add(Company company) throws JustBuyItException;
+    public abstract String create(Company company) throws JustBuyItException;
+
+    /**
+     * Updates the given company.
+     * 
+     * @param company
+     *            the company
+     * @throws JustBuyItException
+     *             if there was an error during the action
+     */
+    public abstract Company update(Company company) throws JustBuyItException;
 
     /**
      * Deletes the given company.
@@ -29,7 +39,15 @@ public interface CompanyDAO {
      * @throws JustBuyItException
      *             if there was an error during the action
      */
-    public abstract void delete(String companyId) throws JustBuyItException;
+    public abstract void delete(Company company) throws JustBuyItException;
+
+    /**
+     * Finds a company with the given ID.
+     * @param companyId
+     *            the company ID
+     * @return the company
+     */
+    public abstract Company findById(String companyId);
 
     /**
      * Finds all companies.
@@ -37,17 +55,5 @@ public interface CompanyDAO {
      * @return the companies
      */
     public abstract List<Company> findAll();
-
-    /**
-     * Updates the subscription status of the given company.
-     * 
-     * @param companyId
-     *            the company ID
-     * @param subscriptionStatus
-     *            the new subscription status
-     * @throws JustBuyItException
-     *             if there was an error during the action
-     */
-    public abstract void updateSubscriptionStatus(String companyId, String subscriptionStatus) throws JustBuyItException;
 
 }

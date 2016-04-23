@@ -10,14 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.dao.UserDAO;
-import com.justbuyit.model.Company;
-import com.justbuyit.model.User;
+import com.justbuyit.entity.Company;
+import com.justbuyit.entity.User;
 
 @Controller
 @RequestMapping("/")
@@ -35,18 +36,22 @@ public class MainController {
     public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
         String openId = req.getParameter("openid_url") != null ? req.getParameter("openid_url") : req.getParameter("openid.identity");
         ModelAndView modelAndView = new ModelAndView();
-        if (userDAO.isAuthenticated(openId)) {
+        if (!StringUtils.isEmpty(openId)) {
 
-            // fetch user by openId
+            // fetch user by openId and proceed
             User user = userDAO.findByOpenId(openId);
-            modelAndView.addObject("name", user.getFirstName());
-            modelAndView.setViewName("main");
-            return modelAndView;
-        } else {
-            modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
-            modelAndView.setViewName("forbidden");
-            return modelAndView;
+            if (user != null && user.isAuthenticated()) {
+                modelAndView.addObject("name", user.getFirstName());
+                modelAndView.setViewName("main");
+                return modelAndView;
+            }
         }
+        
+        // forward to forbidden page
+        resp.setStatus(403);
+        modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
+        modelAndView.setViewName("forbidden");
+        return modelAndView;
     }
     
     @RequestMapping(value = "/status", method = RequestMethod.GET)

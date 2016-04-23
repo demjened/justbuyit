@@ -9,7 +9,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.justbuyit.auth.ConnectionSigner;
-import com.justbuyit.dao.SubscriptionDAO;
+import com.justbuyit.dao.CompanyDAO;
+import com.justbuyit.entity.Company;
 import com.justbuyit.model.event.subscription.ChangeSubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
@@ -23,10 +24,10 @@ public class ChangeSubscriptionEventProcessorTest {
     ConnectionSigner mockConnectionSigner;
     
     @Mock
-    SubscriptionDAO mockSubscriptionDAO;
+    CompanyDAO mockCompanyDAO;
     
     @InjectMocks
-    private ChangeSubscriptionEventProcessor eventProcessor = new ChangeSubscriptionEventProcessor(mockConnectionSigner, mockSubscriptionDAO);
+    private ChangeSubscriptionEventProcessor eventProcessor = new ChangeSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
     @Test
     public void testUnmarshal() throws Exception {
@@ -36,11 +37,17 @@ public class ChangeSubscriptionEventProcessorTest {
     @Test
     public void testProcessEvent() throws Exception {
         ChangeSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
+        
+        Company company = new Company();
+        company.setUuid(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.when(mockCompanyDAO.findById(event.getPayload().getAccount().getAccountIdentifier())).thenReturn(company);
+
         Result result = eventProcessor.processEvent(event);
         
         // verify that the subscription gets updated
-        Mockito.verify(mockSubscriptionDAO).update(event.getPayload().getAccount().getAccountIdentifier(), event.getPayload().getOrder());
-        
+        Assert.assertEquals(event.getPayload().getOrder().getEditionCode(), company.getSubscriptionEditionCode());
+        Mockito.verify(mockCompanyDAO).update(company);
+
         Assert.assertTrue(result.isSuccess());
     }
     

@@ -33,7 +33,7 @@ public class EventProcessorTest {
     HttpURLConnection conn;
     
     @InjectMocks
-    private CancelSubscriptionEventProcessor accountNotFoundThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null, null, null) {
+    private CancelSubscriptionEventProcessor accountNotFoundThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null) {
         @Override
         protected Result processEvent(CancelSubscriptionEvent event) throws JustBuyItException {
             throw new AccountNotFoundException("Error");
@@ -46,7 +46,7 @@ public class EventProcessorTest {
     };
     
     @InjectMocks
-    private CancelSubscriptionEventProcessor runtimeExceptionThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null, null, null) {
+    private CancelSubscriptionEventProcessor runtimeExceptionThrowingEventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, null) {
         @Override
         protected Result processEvent(CancelSubscriptionEvent event) throws JustBuyItException {
             throw new RuntimeException("Runtime Error");

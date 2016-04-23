@@ -8,8 +8,6 @@ import org.springframework.util.Assert;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
-import com.justbuyit.dao.SubscriptionDAO;
-import com.justbuyit.dao.UserDAO;
 import com.justbuyit.eventprocessor.subscription.CancelSubscriptionEventProcessor;
 import com.justbuyit.eventprocessor.subscription.ChangeSubscriptionEventProcessor;
 import com.justbuyit.eventprocessor.subscription.CreateSubscriptionEventProcessor;
@@ -30,33 +28,27 @@ public class EventProcessorFactory implements ApplicationContextAware {
         case SUBSCRIPTION_ORDER:
             return new CreateSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class), 
-                    applicationContext.getBean(CompanyDAO.class),
-                    applicationContext.getBean(SubscriptionDAO.class),
-                    applicationContext.getBean(UserDAO.class));
+                    applicationContext.getBean(CompanyDAO.class));
         case SUBSCRIPTION_CHANGE:
             return new ChangeSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class), 
-                    applicationContext.getBean(SubscriptionDAO.class)); 
+                    applicationContext.getBean(CompanyDAO.class)); 
         case SUBSCRIPTION_CANCEL:
             return new CancelSubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
-                    applicationContext.getBean(CompanyDAO.class),
-                    applicationContext.getBean(SubscriptionDAO.class),
-                    applicationContext.getBean(UserDAO.class));
+                    applicationContext.getBean(CompanyDAO.class));
         case SUBSCRIPTION_NOTICE:
             return new NotifySubscriptionEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
-                    applicationContext.getBean(CompanyDAO.class),
-                    applicationContext.getBean(SubscriptionDAO.class),
-                    applicationContext.getBean(UserDAO.class));
+                    applicationContext.getBean(CompanyDAO.class));
         case USER_ASSIGNMENT:
             return new AssignUserEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
-                    applicationContext.getBean(UserDAO.class));
+                    applicationContext.getBean(CompanyDAO.class));
         case USER_UNASSIGNMENT:
             return new UnassignUserEventProcessor(
                     applicationContext.getBean(ConnectionSigner.class),
-                    applicationContext.getBean(UserDAO.class));
+                    applicationContext.getBean(CompanyDAO.class));
         case USER_UPDATED:
         default:
             return null;

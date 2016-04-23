@@ -1,39 +1,46 @@
-package com.justbuyit.model;
+package com.justbuyit.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.OneToMany;
+
+import org.springframework.beans.BeanUtils;
+
+import com.google.inject.internal.Sets;
 
 @Entity
-@XmlRootElement
 public class Company {
 
     @Id
     private String uuid;
-    private String country;
-    private String email;
     private String name;
     private String phoneNumber;
+    private String email;
     private String website;
-    
-    @Transient
+    private String country;
+    private String subscriptionEditionCode;
     private String subscriptionStatus;
-    
-    public String getCountry() {
-        return country;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "company", cascade = CascadeType.ALL)
+    private Set<User> users = Sets.newHashSet();
+
+    public Company() {
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public Company(com.justbuyit.model.Company company) {
+        BeanUtils.copyProperties(company, this);
     }
 
-    public String getEmail() {
-        return email;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -52,12 +59,12 @@ public class Company {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getWebsite() {
@@ -68,12 +75,36 @@ public class Company {
         this.website = website;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getSubscriptionEditionCode() {
+        return subscriptionEditionCode;
+    }
+
+    public void setSubscriptionEditionCode(String subscriptionEditionCode) {
+        this.subscriptionEditionCode = subscriptionEditionCode;
+    }
+
     public String getSubscriptionStatus() {
         return subscriptionStatus;
     }
 
     public void setSubscriptionStatus(String subscriptionStatus) {
         this.subscriptionStatus = subscriptionStatus;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -104,8 +135,7 @@ public class Company {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Company [country=").append(country).append(", email=").append(email).append(", name=").append(name).append(", phoneNumber=")
-                .append(phoneNumber).append(", uuid=").append(uuid).append(", website=").append(website).append("]");
+        builder.append("Company [uuid=").append(uuid).append(", name=").append(name).append(", users=").append(users).append("]");
         return builder.toString();
     }
 

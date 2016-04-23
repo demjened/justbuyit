@@ -10,8 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.justbuyit.auth.ConnectionSigner;
 import com.justbuyit.dao.CompanyDAO;
-import com.justbuyit.dao.SubscriptionDAO;
-import com.justbuyit.dao.UserDAO;
+import com.justbuyit.entity.Company;
 import com.justbuyit.model.event.subscription.CancelSubscriptionEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
@@ -27,14 +26,8 @@ public class CancelSubscriptionEventProcessorTest {
     @Mock
     CompanyDAO mockCompanyDAO;
     
-    @Mock
-    SubscriptionDAO mockSubscriptionDAO;
-    
-    @Mock
-    UserDAO mockUserDAO;
-    
     @InjectMocks
-    private CancelSubscriptionEventProcessor eventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO, mockSubscriptionDAO, mockUserDAO);
+    private CancelSubscriptionEventProcessor eventProcessor = new CancelSubscriptionEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
     @Test
     public void testUnmarshal() throws Exception {
@@ -44,12 +37,15 @@ public class CancelSubscriptionEventProcessorTest {
     @Test
     public void testProcessEvent() throws Exception {
         CancelSubscriptionEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
+        
+        Company company = new Company();
+        company.setUuid(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.when(mockCompanyDAO.findById(event.getPayload().getAccount().getAccountIdentifier())).thenReturn(company);
+        
         Result result = eventProcessor.processEvent(event);
         
         // verify that the entities get deleted
-        Mockito.verify(mockSubscriptionDAO).delete(event.getPayload().getAccount().getAccountIdentifier());
-        Mockito.verify(mockCompanyDAO).delete(event.getPayload().getAccount().getAccountIdentifier());
-        Mockito.verify(mockUserDAO).deleteAll(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.verify(mockCompanyDAO).delete(company);
         
         Assert.assertTrue(result.isSuccess());
     }

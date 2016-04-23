@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.justbuyit.auth.ConnectionSigner;
-import com.justbuyit.dao.UserDAO;
+import com.justbuyit.dao.CompanyDAO;
+import com.justbuyit.entity.Company;
+import com.justbuyit.entity.User;
 import com.justbuyit.eventprocessor.EventProcessor;
 import com.justbuyit.exception.JustBuyItException;
 import com.justbuyit.model.event.user.AssignUserEvent;
@@ -15,11 +17,11 @@ public class AssignUserEventProcessor extends EventProcessor<AssignUserEvent> {
 
     private final static Logger LOG = LoggerFactory.getLogger(AssignUserEventProcessor.class);
 
-    private UserDAO userDAO;
+    private CompanyDAO companyDAO;
 
-    public AssignUserEventProcessor(ConnectionSigner connectionSigner, UserDAO userDAO) {
+    public AssignUserEventProcessor(ConnectionSigner connectionSigner, CompanyDAO companyDAO) {
         super(connectionSigner);
-        this.userDAO = userDAO;
+        this.companyDAO = companyDAO;
     }
 
     @Override
@@ -29,7 +31,9 @@ public class AssignUserEventProcessor extends EventProcessor<AssignUserEvent> {
         String companyId = event.getPayload().getAccount().getAccountIdentifier();
 
         // assign user to company
-        userDAO.assign(event.getPayload().getUser(), companyId);
+        Company company = companyDAO.findById(companyId);
+        company.getUsers().add(new User(event.getPayload().getUser()));
+        companyDAO.update(company);
         
         return Result.successResult(String.format("Assigned user [%s] to company [%s]", event.getPayload().getUser().getUuid(), companyId));
     }

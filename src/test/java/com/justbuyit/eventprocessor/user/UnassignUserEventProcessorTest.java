@@ -9,7 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.justbuyit.auth.ConnectionSigner;
-import com.justbuyit.dao.UserDAO;
+import com.justbuyit.dao.CompanyDAO;
+import com.justbuyit.entity.Company;
+import com.justbuyit.entity.User;
 import com.justbuyit.model.event.user.UnassignUserEvent;
 import com.justbuyit.model.result.Result;
 import com.justbuyit.util.TestUtils;
@@ -23,10 +25,10 @@ public class UnassignUserEventProcessorTest {
     ConnectionSigner mockConnectionSigner;
     
     @Mock
-    UserDAO mockUserDAO;
+    CompanyDAO mockCompanyDAO;
     
     @InjectMocks
-    private UnassignUserEventProcessor eventProcessor = new UnassignUserEventProcessor(mockConnectionSigner, mockUserDAO);
+    private UnassignUserEventProcessor eventProcessor = new UnassignUserEventProcessor(mockConnectionSigner, mockCompanyDAO);
 
     @Test
     public void testUnmarshal() throws Exception {
@@ -36,10 +38,19 @@ public class UnassignUserEventProcessorTest {
     @Test
     public void testProcessEvent() throws Exception {
         UnassignUserEvent event = eventProcessor.unmarshalEvent(TestUtils.getSampleFileStream(SAMPLE_FILE));
+        
+        Company company = new Company();
+        company.setUuid(event.getPayload().getAccount().getAccountIdentifier());
+        Mockito.when(mockCompanyDAO.findById(event.getPayload().getAccount().getAccountIdentifier())).thenReturn(company);
+        
+        User user = new User();
+        user.setUuid(event.getPayload().getUser().getUuid());
+        
         Result result = eventProcessor.processEvent(event);
         
         // verify that the user gets unassigned
-        Mockito.verify(mockUserDAO).unassign(event.getPayload().getUser(), event.getPayload().getAccount().getAccountIdentifier());
+        Assert.assertFalse(company.getUsers().contains(user));
+        Mockito.verify(mockCompanyDAO).update(company);
         
         Assert.assertTrue(result.isSuccess());
     }
