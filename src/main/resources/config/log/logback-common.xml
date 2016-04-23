@@ -7,15 +7,17 @@
     </encoder>
   </appender>
 
+  <!-- Application logger -->
   <logger name="com.justbuyit" level="${com.justbuyit.logger.level}" additivity="false">
     <appender-ref ref="STDOUT" />
   </logger>
   
-  <logger name="org.hibernate.sql" level="debug" additivity="false">
+  <!-- Hibernate logger -->
+  <logger name="org.hibernate.sql" level="${com.justbuyit.logger.level}" additivity="false">
     <appender-ref ref="STDOUT" />
   </logger>
-  
 
+  <!-- Root logger -->
   <root level="warn">
     <appender-ref ref="STDOUT" />
   </root>

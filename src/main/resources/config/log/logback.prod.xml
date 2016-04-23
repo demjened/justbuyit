@@ -2,5 +2,6 @@
 <included>
   
   <property name="com.justbuyit.logger.level" value="info" />
+  <property name="org.hibernate.sql.level" value="warn" />
   
 </included>
