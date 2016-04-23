@@ -63,7 +63,7 @@ public class OpenIdAuthenticator {
             }
             return null;
         } catch (OpenIDException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: relay the info back to the user
         }
 
         return null;
@@ -105,7 +105,7 @@ public class OpenIdAuthenticator {
                 return verified; // success
             }
         } catch (OpenIDException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: relay the info back to the user
         }
 
         return null;
