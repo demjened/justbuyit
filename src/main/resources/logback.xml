@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 
-  <include resource="com/justbuyit/config/log/logback.${APP_CONFIG_MODE:-dev}.xml"/>
-  <include resource="com/justbuyit/config/log/logback-common.xml"/>
+  <include resource="config/log/logback.${APP_CONFIG_MODE:-dev}.xml"/>
+  <include resource="config/log/logback-common.xml"/>
 
 </configuration>

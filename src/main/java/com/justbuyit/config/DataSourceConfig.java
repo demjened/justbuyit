@@ -25,7 +25,7 @@ import com.justbuyit.dao.hibernate.SimpleUserDAO;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value = { "classpath:com/justbuyit/config/env/env.${APP_CONFIG_MODE:dev}.properties" })
+@PropertySource(value = { "classpath:config/env/env.${APP_CONFIG_MODE:dev}.properties" })
 public class DataSourceConfig {
 
     @Autowired
