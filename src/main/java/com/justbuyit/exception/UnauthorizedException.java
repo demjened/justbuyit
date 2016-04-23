@@ -1,5 +1,8 @@
 package com.justbuyit.exception;
 
+/**
+ * Exception for a case when the user is unauthorized, eg. the OAuth credentials are not valid.
+ */
 public class UnauthorizedException extends JustBuyItException {
 
     private static final long serialVersionUID = -7343985018344224032L;
