@@ -1,7 +1,5 @@
 package com.justbuyit.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.justbuyit.dao.CompanyDAO;
 import com.justbuyit.dao.UserDAO;
-import com.justbuyit.entity.Company;
 import com.justbuyit.entity.User;
 
 /**
@@ -27,9 +23,6 @@ import com.justbuyit.entity.User;
 public class MainController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(MainController.class);
-
-    @Autowired
-    private CompanyDAO companyDAO;
 
     @Autowired
     private UserDAO userDAO;
@@ -66,25 +59,6 @@ public class MainController extends ExceptionHandlingController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "Please log in at AppDirect and launch the application from MyApps.");
         modelAndView.setViewName("forbidden");
-        return modelAndView;
-    }
-
-    /**
-     * Loads the status screen that displays a list of subscribed companies and users.
-     * 
-     * @return the next model-and-view
-     */
-    @RequestMapping("/status")
-    public ModelAndView status() {
-        LOG.info("/status");
-
-        // fetch all companies and related info
-        List<Company> companies = companyDAO.findAll();
-        
-        // navigate to status page
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("companies", companies);
-        modelAndView.setViewName("status");
         return modelAndView;
     }
 
