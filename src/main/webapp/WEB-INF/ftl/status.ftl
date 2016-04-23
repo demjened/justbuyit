@@ -6,7 +6,7 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h2>${subtitle?upper_case}</h2>
+      <h2>JusyBuyIt! - ${subtitle?upper_case}</h2>
       
       <div class="panel panel-default">
         <div class="panel-heading">Registered users</div>

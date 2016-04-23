@@ -6,7 +6,7 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h2 style="color: #ce4844">${subtitle?upper_case}</h2>
+      <h2 style="color: #ce4844">JusyBuyIt! - ${subtitle?upper_case}</h2>
       <p>Something went wrong. Please contact your administrator.</p>
       <p>Exception: <span style="color: gray">${exception}</span></p>
       <p>
