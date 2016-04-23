@@ -22,7 +22,7 @@ import com.justbuyit.entity.User;
  */
 @Controller
 @RequestMapping
-public class LoginController {
+public class LoginController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(LoginController.class);
 

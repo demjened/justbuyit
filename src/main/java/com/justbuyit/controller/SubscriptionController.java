@@ -22,7 +22,7 @@ import com.justbuyit.model.result.Result;
  */
 @RestController
 @RequestMapping(value = "/subscription", method = RequestMethod.GET, produces = "application/xml")
-public class SubscriptionController {
+public class SubscriptionController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(SubscriptionController.class);
 

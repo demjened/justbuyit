@@ -18,7 +18,7 @@ import com.justbuyit.model.result.Result;
  */
 @RestController
 @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/xml")
-public class UserAssignmentController {
+public class UserAssignmentController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserAssignmentController.class);
 

@@ -23,8 +23,8 @@ import com.justbuyit.entity.User;
  * Controller for accessing the main application screen.
  */
 @Controller
-@RequestMapping("/")
-public class MainController {
+@RequestMapping(value = "/", method = RequestMethod.GET)
+public class MainController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(MainController.class);
 
@@ -43,7 +43,7 @@ public class MainController {
      *            the response
      * @return the next model-and-view
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping("/")
     public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) {
         LOG.info("/");
 
@@ -74,13 +74,13 @@ public class MainController {
      * 
      * @return the next model-and-view
      */
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    @RequestMapping("/status")
     public ModelAndView status() {
         LOG.info("/status");
 
         // fetch all companies and related info
         List<Company> companies = companyDAO.findAll();
-
+        
         // navigate to status page
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("companies", companies);

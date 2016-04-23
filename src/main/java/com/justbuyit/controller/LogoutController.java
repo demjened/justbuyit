@@ -19,7 +19,7 @@ import com.justbuyit.exception.UserNotFoundException;
  */
 @Controller
 @RequestMapping("/logout")
-public class LogoutController {
+public class LogoutController extends ExceptionHandlingController {
 
     private final static Logger LOG = LoggerFactory.getLogger(LogoutController.class);
 
